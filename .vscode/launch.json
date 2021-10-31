@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch DdajaApplication",
+            "request": "launch",
+            "mainClass": "com.bng.ddaja.DdajaApplication"
+        },
+        {
+            "type": "java",
+            "name": "Launch DdajaApplication",
+            "request": "launch",
+            "mainClass": "com.bng.ddaja.DdajaApplication",
+            "projectName": "ddaja"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-DdajaApplication<ddaja>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.ddaja.ddaja.DdajaApplication",
+            "projectName": "ddaja",
+            "args": ""
+        }
+    ]
+}
