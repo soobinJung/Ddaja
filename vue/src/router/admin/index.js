@@ -1,9 +1,9 @@
 import Layout from '@/layout'
-import questionRouter from './question'
+
 const adminRouter = {
-  path: '/admin',
+  path: '/admin-ddaja',
   component: Layout,
-  redirect: '/admin/dashboard',
+  redirect: '/admin-ddaja/dashboard',
   name: 'admin',
   meta: {
     title: '관리자'
@@ -11,38 +11,55 @@ const adminRouter = {
   children: [
     {
       path: 'dashboard',
-      component: () => import('@/views/admin/dashboard'),
+      component: () => import('@/view-admin/dashboard'),
       name: '관리자 메인',
       meta: {
         title: '관리자 메인'
       },
       roles: ['admin']
     },
-    questionRouter,
     {
-      path: 'notice',
-      component: () => import('@/views/admin/notice'),
-      name: '공지사항 관리',
+      path: 'license',
+      component: () => import('@/view-admin/license'),
+      name: 'Admin / License Manager',
       meta: {
-        title: '공지사항 관리'
+        title: 'Admin / License Manager'
       },
       roles: ['admin']
     },
     {
-      path: 'license',
-      component: () => import('@/views/admin/license'),
-      name: '자격증 관리',
+      path: 'notice',
+      component: () => import('@/view-admin/notice'),
+      name: 'Admin / Notice Manager',
       meta: {
-        title: '자격증 관리'
+        title: 'Admin / Notice Manager'
+      },
+      roles: ['admin']
+    },
+    {
+      path: 'question',
+      component: () => import('@/view-admin/question'),
+      name: 'Admin / Question Manager',
+      meta: {
+        title: 'Admin / Question Manager'
       },
       roles: ['admin']
     },
     {
       path: 'user',
-      component: () => import('@/views/admin/user'),
-      name: '회원 관리',
+      component: () => import('@/view-admin/user'),
+      name: 'Admin / User Manager',
       meta: {
-        title: '회원 관리'
+        title: 'Admin / User Manager'
+      },
+      roles: ['admin']
+    },
+    {
+      path: 'word',
+      component: () => import('@/view-admin/word'),
+      name: 'Admin / Word Manager',
+      meta: {
+        title: 'Admin / Word Manager'
       },
       roles: ['admin']
     }
