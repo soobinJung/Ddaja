@@ -4,6 +4,7 @@
       <div style="float:left; width:20%; padding: 3% 0 1% 7%; height:100px;">
         <img :src="Logo" class="logo">
       </div>
+      <!-- <panel-group @handleSetLineChartData="handleSetLineChartData" /> -->
       <div style="float:right; width: 80%; height:100px; padding:4% 10% 0 0">
         <div style="float:right; padding:0 0 0 3% ">
           <el-button type="primary" @click="setLisenseList()">검 색</el-button>
@@ -42,9 +43,11 @@
 <script>
 import mainLogo from '@/assets/DDaJa-Logo/main_logo.png'
 import { fetchLicenseList } from '@/ddaja-api/user/dashboard/dashboard'
+import PanelGroup from './component/PanelGroup'
 
 export default {
   components: {
+    PanelGroup
   },
 
   data() {
