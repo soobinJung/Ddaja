@@ -1,68 +1,77 @@
 <template>
   <div style="padding: 5% 5% 0 5%">
-    <el-row 
-      :gutter = "40" 
-      class   = "panel-group">
-      <el-col 
-        v-for = "item in licenseOption"
-        :key  = "item.id"
-        :xs   = "12" 
-        :sm   = "12" 
-        :lg   = "6" 
-        class = "card-panel-col">
-        <div 
-          class  = "card-panel" 
-          @click = "routerChange('/explore', item)">
-          <div 
-            v-if  = "item.type === 'WRITING'" 
-            class = "card-panel-icon-wrapper icon1">
-            <svg-icon 
-              icon-class = "education" 
-              class-name = "card-panel-icon" />
+    <el-row
+      :gutter="40"
+      class="panel-group"
+    >
+      <el-col
+        v-for="item in licenseOption"
+        :key="item.id"
+        :xs="12"
+        :sm="12"
+        :lg="6"
+        class="card-panel-col"
+      >
+        <div
+          class="card-panel"
+          @click="routerChange('/explore', item)"
+        >
+          <div
+            v-if="item.type === 'WRITING'"
+            class="card-panel-icon-wrapper icon1"
+          >
+            <svg-icon
+              icon-class="education"
+              class-name="card-panel-icon"
+            />
           </div>
-          <div 
-            v-else 
-            class = "card-panel-icon-wrapper icon2">
-            <svg-icon 
-              icon-class = "education" 
-              class-name = "card-panel-icon" />
+          <div
+            v-else
+            class="card-panel-icon-wrapper icon2"
+          >
+            <svg-icon
+              icon-class="education"
+              class-name="card-panel-icon"
+            />
           </div>
-          <div class = "card-panel-description">
-            <div 
-              class = "card-panel-text" 
-              style = "float:right; ">
-              <span style="float:right; font-weight : bold"> {{ item.name }} </span> 
-              <br/><br/>
-              <span 
-                style = "font-size:13px; float:right;"> 
+          <div class="card-panel-description">
+            <div
+              class="card-panel-text"
+              style="float:right; "
+            >
+              <span style="float:right; font-weight : bold"> {{ item.name }} </span>
+              <br><br>
+              <span
+                style="font-size:13px; float:right;"
+              >
                 {{ item.type === 'WRITING' ? "필기" : item.type === "PERFORM" ? "실기" : "" }}<br>
               </span>
             </div>
           </div>
         </div>
-      </el-col> 
+      </el-col>
     </el-row>
-    </div>
+  </div>
 </template>
 <script>
 
 export default {
-  props : {
+  props: {
     licenseOption: {
-      type: Array
-      , default: true
+      type: Array,
+      default: true
     }
-  }
+  },
 
-  , data() {
+  data() {
     return {
       param: {
         name: ''
       }
     }
-  }
+  },
 
-  , methods: {
+  methods: {
     routerChange(path, licenseInfo) {
       this.$router.push(path)
       this.$session.set('licenseInfo', {
@@ -104,7 +113,7 @@ export default {
       }
       .icon2 {
         background: #f4516c;
-      } 
+      }
     }
     .icon1 {
       color: #40c9c6;
