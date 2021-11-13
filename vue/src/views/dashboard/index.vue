@@ -1,11 +1,12 @@
 <template>
   <div style="margin : 10px 30px 100px 30px; padding : 0 0 100px 0; overflow:hidden; ">
     <div class="main-logo-div" style="height:150px;">
-      <div style="float:left; width:20%; padding: 3% 0 1% 7%; height:100px;">
+
+      <div style="float:left; width:100%; padding: 3% 0 1% 7%; height:100px;">
         <img :src="Logo" class="logo">
       </div>
-      <!-- <panel-group @handleSetLineChartData="handleSetLineChartData" /> -->
-      <div style="float:right; width: 80%; height:100px; padding:4% 10% 0 0">
+
+      <div style="float:right; width: 80%; height:100px; padding:4% 5% 0 0">
         <div style="float:right; padding:0 0 0 3% ">
           <el-button type="primary" @click="setLisenseList()">검 색</el-button>
         </div>
@@ -14,7 +15,15 @@
         </div>
       </div>
     </div>
+
     <div style="margin:0 0 100px 0; padding:0 0 100px 0">
+      <panel-group
+        :license-option="licenseOption"
+        @handleSetLineChartData="handleSetLineChartData"
+      />
+    </div>
+
+    <!-- <div style="margin:0 0 100px 0; padding:0 0 100px 0">
       <div
         v-for="item in licenseOption"
         :key="item.id"
@@ -36,7 +45,7 @@
           </el-card>
         </router-link>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -86,6 +95,10 @@ export default {
         subject: licenseInfo.subjects
       }
       this.$session.set('licenseInfo', info)
+    },
+
+    handleSetLineChartData() {
+
     }
   }
 }
