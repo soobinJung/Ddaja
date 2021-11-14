@@ -19,40 +19,15 @@
     <div style="margin:0 0 100px 0; padding:0 0 100px 0">
       <panel-group
         :license-option="licenseOption"
-        @handleSetLineChartData="handleSetLineChartData"
       />
     </div>
-
-    <!-- <div style="margin:0 0 100px 0; padding:0 0 100px 0">
-      <div
-        v-for="item in licenseOption"
-        :key="item.id"
-        class="clearfix"
-        style="float:left; margin:50px 100px 50px 100px; width:19%; height:120px;"
-        @click="sessionSave(item)"
-      >
-        <router-link to="/explore">
-          <el-card class="box-card" style="margin:10px 30px 20px 30px;">
-            <div style="margin: 8% 10px 8% 10%">
-              <span style="font-size:15px; font-weight:bold"><i class="el-icon-success" style="margin:0 10px 0 0" />{{ item.name }}<br></span>
-            </div>
-            <div style="margin:10px 10px 10px 10%">
-              <span style="font-size:13px">주최 : {{ item.agency }}<br></span>
-            </div>
-            <div style="margin:10px 10px 40px 10%">
-              <span style="font-size:13px">유형 : {{ item.type === 'WRITING' ? "필기" : item.type === "PERFORM" ? "실기" : "" }}<br></span>
-            </div>
-          </el-card>
-        </router-link>
-      </div>
-    </div> -->
   </div>
 </template>
 
 <script>
 import mainLogo from '@/assets/DDaJa-Logo/main_logo.png'
-import { fetchLicenseList } from '@/ddaja-api/user/dashboard/dashboard'
 import PanelGroup from './component/PanelGroup'
+import { fetchLicenseList } from '@/ddaja-api/user/dashboard/dashboard'
 
 export default {
   components: {
@@ -73,10 +48,6 @@ export default {
     this.setLisenseList()
   },
 
-  beforeCreate: function() {
-
-  },
-
   methods: {
     async setLisenseList() {
       await fetchLicenseList(this.param).then(response => {
@@ -95,10 +66,6 @@ export default {
         subject: licenseInfo.subjects
       }
       this.$session.set('licenseInfo', info)
-    },
-
-    handleSetLineChartData() {
-
     }
   }
 }
