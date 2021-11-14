@@ -159,7 +159,7 @@ export default {
         answer: '',
         title: '',
         content: '',
-        page: 1,
+        page: 0,
         size: 100
       },
       tableData: [],

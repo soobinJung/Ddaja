@@ -26,14 +26,14 @@ export function fetchListTotalCount(param) {
 }
 
 export function fetchWordQuestion(param) {
-  console.log(param)
   return request({
     url: '/word-questions',
     method: 'get',
     params: {
       wordID: param.wordID,
       page: param.page || 0,
-      size: param.size || 0
+      size: param.size || 0,
+      inUse: true
     }
   })
 }
