@@ -52,6 +52,9 @@ public class License extends CommonEntity {
     @Column(name = "PASS_SCORE")
     private int passScore;
 
+    @Column(name = "EXAM_FEE")
+    private int examFee;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "TYPE")
     private LicenseType type;
@@ -79,6 +82,9 @@ public class License extends CommonEntity {
 
     @OneToMany(mappedBy = "license")
     private List<StateQuestion> stateQuestions;
+
+    @OneToMany(mappedBy = "license")
+    private List<LicenseIf> licenseIfs;
 
     public void setWord(Word word) {
         this.words.add(word);
@@ -133,6 +139,13 @@ public class License extends CommonEntity {
         this.stateQuestions.add(stateQuestion);
         if(stateQuestion.getLicense() != this){
             stateQuestion.setLicense(this);
+        }
+    }
+
+    public void setLicenseIfs(LicenseIf licenseIf) {
+        this.licenseIfs.add(licenseIf);
+        if(licenseIf.getLicense() != this){
+            licenseIf.setLicense(this);
         }
     }
 }

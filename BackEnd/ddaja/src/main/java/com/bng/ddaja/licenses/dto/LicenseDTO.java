@@ -31,6 +31,7 @@ public class LicenseDTO extends CommonDTO {
     private String agency;
     private LicenseType type;
     private int passScore;
+    private int examFee;
     private List<SubjectDTO> subjects;
 
     public LicenseDTO(License vo) {
@@ -41,6 +42,7 @@ public class LicenseDTO extends CommonDTO {
         this.agency = vo.getAgency();
         this.type = vo.getType();
         this.passScore = vo.getPassScore();
+        this.examFee = vo.getExamFee();
         super.createdDate = vo.getCreatedDate();
         super.modifiedDate = vo.getModifiedDate();
         this.subjects = vo.getSubjects() == null ? null : vo.getSubjects().stream().map(v -> new SubjectDTO(v)).collect(Collectors.toList());
@@ -55,6 +57,7 @@ public class LicenseDTO extends CommonDTO {
         .agency(this.agency)
         .type(this.type)
         .passScore(this.passScore)
+        .examFee(this.examFee)
         .build();
     }
 
@@ -67,6 +70,7 @@ public class LicenseDTO extends CommonDTO {
         log.info("AGENCY     : " + this.agency);
         log.info("TYPE       : " + this.type);
         log.info("PASS SCORE : " + this.passScore);
+        log.info("EXAM FEE   : " + this.examFee);
         log.info("====================================");
     }
 }

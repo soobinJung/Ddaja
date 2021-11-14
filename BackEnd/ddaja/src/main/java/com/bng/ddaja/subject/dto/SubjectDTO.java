@@ -30,7 +30,7 @@ public class SubjectDTO extends CommonDTO {
         name = "name"
         , example = ""
     )
-    private String name;;
+    private String name;
 
     @ApiModelProperty(
         name = "minScore"

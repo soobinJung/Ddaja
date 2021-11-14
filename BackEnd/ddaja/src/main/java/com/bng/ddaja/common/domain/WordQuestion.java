@@ -50,7 +50,7 @@ public class WordQuestion extends CommonEntity {
 
     public void setWord(Word word) {
         if(this.word != null) {
-        this.word.getWordQuestions().remove(this);
+            this.word.getWordQuestions().remove(this);
         }
         this.word = word;
         if(word.getWordQuestions() != null){

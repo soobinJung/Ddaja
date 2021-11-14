@@ -43,7 +43,6 @@ public class Word extends CommonEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "L_ID")
     private License license;
-
     
     @OneToMany(mappedBy = "word", fetch = FetchType.LAZY)
     private List<WordQuestion> wordQuestions = new ArrayList<WordQuestion>();
