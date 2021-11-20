@@ -20,3 +20,13 @@ export function fetchLicenseIf(param) {
     }
   })
 }
+
+export function fetchSuccessComment(param) {
+  return request({
+    url: '/success-comment',
+    method: 'get',
+    params: {
+      licenseID: param.licenseID
+    }
+  })
+}

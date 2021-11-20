@@ -84,11 +84,40 @@
     </div>
 
     <div class="block2">
-      <div class="block4"><i class="el-icon-success" /><span class="demonstration"> BEST 합격 후기 </span></div>
-      <el-carousel height="525px">
-        <el-carousel-item>
+      <div class="block4">
+        <span class="demonstration"> BEST 합격 후기 </span>
+      </div>
+      <el-carousel height="530px">
+        <el-carousel-item v-for="item in successComment" :key="item.id" style="background-color:#f2f5f7; border:1px solid #e0e0e0; border-radius:30px">
           <router-link to="/explore/acceptance-review">
-            <h3 class="small">sss</h3>
+
+            <div style="padding: 5% 5% 2% 5%;">
+              <span style="font-size:20px; font-weight: bold;">
+                <i class="el-icon-trophy" /> {{ item.title }}
+              </span>
+            </div>
+
+            <div style="width:100%; height: 50px; padding :0% 5% 7% 3%">
+              <div style="width:15%; float:left; height: 100%; padding: 1.5% 2% 2% 2%;">
+                <span style="font-size:15px; font-weight: bold;">좋아요</span>
+              </div>
+              <div style="width:35%; float:left; height: 100%; padding: 1.5% 2% 2% 2%; ">
+                <span>{{ item.like }}</span>
+              </div>
+              <div style="width:15%; float:left; height: 100%; padding: 1.5% 2% 2% 2%; ">
+                <span style="font-size:15px; font-weight: bold;">합격 점수</span>
+              </div>
+              <div style="width:35%; float:left; height: 100%; padding: 1.5% 2% 2% 2%; ">
+                <span>{{ item.successScore }}</span>
+              </div>
+            </div>
+
+            <div style="padding:0% 5% 0% 5%;">
+              <span style="font-size:16px; font-weight: bold;">
+                {{ item.comment }}
+              </span>
+            </div>
+
           </router-link>
         </el-carousel-item>
       </el-carousel>
@@ -132,15 +161,15 @@
 </template>
 
 <script>
-import { fetchLicense, fetchLicenseIf } from '@/ddaja-api/user/explore/explore/explore'
+import { fetchLicense, fetchLicenseIf, fetchSuccessComment } from '@/ddaja-api/user/explore/explore/explore'
 
 export default {
   name: '',
-  components: { },
   data() {
     return {
       licenseInfo: [],
       licenseIfs: [],
+      successComment: [],
       exploreAllOptions: [
         {
           id: 1,
@@ -203,6 +232,7 @@ export default {
     this.licenseInfo = this.$session.get('licenseInfo')
     this.setLicenseInfo()
     this.setLicenseIf()
+    this.setSuccessComment()
   },
   methods: {
     async setLicenseInfo() {
@@ -247,8 +277,34 @@ export default {
           })
         })
         this.licenseIfs = licenseIfs
+      })
+    },
 
-        console.log(this.licenseIfs)
+    async setSuccessComment() {
+      var param = {
+        licenseID: this.licenseInfo.licenseID
+      }
+      await fetchSuccessComment(param).then(response => {
+        var successComment = []
+        if (response.items.length === 0) {
+          successComment.push({
+            id: 1,
+            like: 0,
+            comment: '.',
+            title: '합격 후기가 존재하지 않습니다.',
+            successScore: 0
+          })
+        }
+        response.items.forEach(x => {
+          successComment.push({
+            id: x.item.id,
+            like: x.item.like,
+            comment: x.item.comment,
+            title: x.item.title,
+            successScore: x.item.successScore
+          })
+        })
+        this.successComment = successComment
       })
     }
   }
