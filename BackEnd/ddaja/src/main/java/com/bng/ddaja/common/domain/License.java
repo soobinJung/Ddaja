@@ -85,6 +85,9 @@ public class License extends CommonEntity {
 
     @OneToMany(mappedBy = "license")
     private List<LicenseIf> licenseIfs;
+    
+    @OneToMany(mappedBy = "license")
+    private List<SuccessComment> successComments;
 
     public void setWord(Word word) {
         this.words.add(word);
@@ -146,6 +149,13 @@ public class License extends CommonEntity {
         this.licenseIfs.add(licenseIf);
         if(licenseIf.getLicense() != this){
             licenseIf.setLicense(this);
+        }
+    }
+
+    public void setSuccessComments(SuccessComment successComment) {
+        this.successComments.add(successComment);
+        if(successComment.getLicense() != this){
+            successComment.setLicense(this);
         }
     }
 }
