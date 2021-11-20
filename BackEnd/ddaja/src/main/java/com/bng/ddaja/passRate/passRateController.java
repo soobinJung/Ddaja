@@ -26,35 +26,50 @@ public class passRateController {
         String 디코더인증키 = "X4XLTRWw4t4a+VaeVigQCCvZAR6QPkeH6BuBnmasH8CJUgXNnyYFOlCb6w/IICASjBzGwfju/sKqEL9cENui6w==";
         String 인코더인증키 = "X4XLTRWw4t4a%2BVaeVigQCCvZAR6QPkeH6BuBnmasH8CJUgXNnyYFOlCb6w%2FIICASjBzGwfju%2FsKqEL9cENui6w%3D%3D";
         
-        String 서비스키     = "X4XLTRWw4t4a%2BVaeVigQCCvZAR6QPkeH6BuBnmasH8CJUgXNnyYFOlCb6w%2FIICASjBzGwfju%2FsKqEL9cENui6w%3D%3D";
-        String 인증키       = "X4XLTRWw4t4a+VaeVigQCCvZAR6QPkeH6BuBnmasH8CJUgXNnyYFOlCb6w/IICASjBzGwfju/sKqEL9cENui6w==";
+        /*Service Key*/
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + 인코더인증키 ); 
 
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + 서비스키 ); /*Service Key*/
-        urlBuilder.append("&" + URLEncoder.encode("ServiceKey","UTF-8") + "=" + URLEncoder.encode(인증키, "UTF-8")); /*발급받은 인증키*/
-        urlBuilder.append("&" + URLEncoder.encode("grdCd","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*등급코드*
-        urlBuilder.append("&" + URLEncoder.encode("baseYY","UTF-8") + "=" + URLEncoder.encode("2018", "UTF-8")); /*통계연도*/
-        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지 번호*/
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지당 데이터 수*/
+        /*발급받은 인증키*/
+        urlBuilder.append("&" + URLEncoder.encode("ServiceKey","UTF-8") + "=" + URLEncoder.encode(인코더인증키, "UTF-8")); 
+
+        /*등급코드*/
+        urlBuilder.append("&" + URLEncoder.encode("grdCd","UTF-8")      + "=" + URLEncoder.encode("10", "UTF-8")); 
+
+        /*통계연도*/
+        urlBuilder.append("&" + URLEncoder.encode("baseYY","UTF-8")     + "=" + URLEncoder.encode("2018", "UTF-8")); 
+
+        /*페이지 번호*/
+        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8")     + "=" + URLEncoder.encode("1", "UTF-8")); 
+
+        /*페이지당 데이터 수*/
+        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8")  + "=" + URLEncoder.encode("1", "UTF-8")); 
+
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-type", "application/json");
+
         System.out.println("Response code: " + conn.getResponseCode());
+
+        StringBuilder sb = new StringBuilder();
         BufferedReader rd;
+        String line;
         if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
             rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         } else {
             rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
         }
-        StringBuilder sb = new StringBuilder();
-        String line;
+        
         while ((line = rd.readLine()) != null) {
             sb.append(line);
         }
+
         rd.close();
         conn.disconnect();
-        System.out.println(sb.toString());
-        return sb.toString();
 
+        System.out.println(sb.toString());
+
+        return sb.toString();
     }
 }
