@@ -25,6 +25,7 @@ import lombok.NoArgsConstructor;
 @Table(name="TB_LICENSE_IF")
 @Entity
 public class LicenseIf extends CommonEntity {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "LIF_ID")
@@ -50,5 +51,4 @@ public class LicenseIf extends CommonEntity {
             license.setLicenseIfs(this);
         }
     }
-    
 }
