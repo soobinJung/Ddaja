@@ -42,17 +42,17 @@ public class SuccessComment extends CommonEntity {
     @Column(name = "IN_USE")
     private boolean inUse;
 
-    @Column(name = "COMMENT")
-    private String comment;
+    @Column(name = "SUCCESS_COMMENT")
+    private String successComment;
 
-    @Column(name = "TITLE")
-    private String title;
+    @Column(name = "SUCCESS_TITLE")
+    private String successTitle;
 
     @Column(name = "SUCCESS_SCORE")
     private int successScore;
 
-    @Column(name = "LIKE")
-    private int like;
+    @Column(name = "LIKE_COUNT")
+    private int likeCount;
 
     public void setLicense( License license ){
         if(this.license != null){

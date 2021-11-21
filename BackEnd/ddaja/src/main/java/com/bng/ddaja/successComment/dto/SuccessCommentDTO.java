@@ -1,6 +1,8 @@
 package com.bng.ddaja.successComment.dto;
 
+import com.bng.ddaja.common.domain.License;
 import com.bng.ddaja.common.domain.SuccessComment;
+import com.bng.ddaja.common.domain.User;
 import com.bng.ddaja.common.dto.CommonDTO;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -44,22 +46,22 @@ public class SuccessCommentDTO extends CommonDTO {
     private boolean inUse;
 
     @ApiModelProperty(
-        name = "comment"
+        name = "successComment"
         , example = ""
     )
-    private String comment;
+    private String successComment;
 
     @ApiModelProperty(
-        name = "title"
+        name = "successTitle"
         , example = ""
     )
-    private String title;
+    private String successTitle;
 
     @ApiModelProperty(
-        name = "like"
+        name = "likeCount"
         , example = "1"
     )
-    private int like;
+    private int likeCount;
 
     @ApiModelProperty(
         name = "like"
@@ -68,14 +70,40 @@ public class SuccessCommentDTO extends CommonDTO {
     private int successScore;
 
     public SuccessCommentDTO( SuccessComment vo ){
-        this.id            = vo.getId();
-        this.lID           = vo.getLicense().getId();
-        this.uID           = vo.getUser().getId();
-        this.comment       = vo.getComment();
-        this.title         = vo.getTitle();
-        this.like          = vo.getLike();
-        this.inUse         = vo.isInUse();
-        this.successScore  = vo.getSuccessScore();
-        super.createdDate  = vo.getCreatedDate();
+        this.id             = vo.getId();
+        this.lID            = vo.getLicense().getId();
+        this.uID            = vo.getUser().getId();
+        this.successTitle   = vo.getSuccessTitle();
+        this.successComment = vo.getSuccessComment();
+        this.likeCount      = vo.getLikeCount();
+        this.inUse          = vo.isInUse();
+        this.successScore   = vo.getSuccessScore();
+        super.createdDate   = vo.getCreatedDate();
+    }
+
+    public SuccessComment toEntity(License license, User user){
+        return SuccessComment.builder()
+        .id(this.id)
+        .license(license)
+        .user(user)
+        .successTitle(this.successTitle)
+        .successComment(this.successComment)
+        .likeCount(this.likeCount)
+        .inUse(this.inUse)
+        .successScore(this.successScore)
+        .build();
+    }
+
+    public void checkValue() {
+        log.info("====== SuccessCommentDTO ToString ====== ");
+        log.info("ID             : " + this.id);
+        log.info("lID            : " + this.lID);
+        log.info("uID            : " + this.uID);
+        log.info("IN USE         : " + this.inUse);
+        log.info("TITLE          : " + this.successTitle);
+        log.info("COMMENT        : " + this.successComment);
+        log.info("SUCCESS SCORE  : " + this.successScore);
+        log.info("LIKE           : " + this.likeCount);
+        log.info("====================================");
     }
 }

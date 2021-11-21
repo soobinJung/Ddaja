@@ -51,6 +51,6 @@ public class LicensesService {
         LicenseDTO dto = new LicenseDTO(licensesRepository.findById(licenseDTO.getId()));
         dto.setInUse(false);
         licensesRepository.save(dto.toEntity());
-        return  new LicenseDTO (licensesRepository.findById(licenseDTO.getId()));
+        return new LicenseDTO (licensesRepository.findById(licenseDTO.getId()));
     }
 }

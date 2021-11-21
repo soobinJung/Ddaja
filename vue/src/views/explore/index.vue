@@ -88,12 +88,12 @@
         <span class="demonstration"> BEST 합격 후기 </span>
       </div>
       <el-carousel height="530px">
-        <el-carousel-item v-for="item in successComment" :key="item.id" style="background-color:#f2f5f7; border:1px solid #e0e0e0; border-radius:30px">
+        <el-carousel-item v-for="item in successComments" :key="item.id" style="background-color:#f2f5f7; border:1px solid #e0e0e0; border-radius:30px">
           <router-link to="/explore/acceptance-review">
 
             <div style="padding: 5% 5% 2% 5%;">
               <span style="font-size:20px; font-weight: bold;">
-                <i class="el-icon-trophy" /> {{ item.title }}
+                <i class="el-icon-trophy" /> {{ item.successTitle }}
               </span>
             </div>
 
@@ -102,7 +102,7 @@
                 <span style="font-size:15px; font-weight: bold;">좋아요</span>
               </div>
               <div style="width:35%; float:left; height: 100%; padding: 1.5% 2% 2% 2%; ">
-                <span>{{ item.like }}</span>
+                <span>{{ item.likeCount }}</span>
               </div>
               <div style="width:15%; float:left; height: 100%; padding: 1.5% 2% 2% 2%; ">
                 <span style="font-size:15px; font-weight: bold;">합격 점수</span>
@@ -113,50 +113,12 @@
             </div>
 
             <div style="padding:0% 5% 0% 5%;">
-              <span style="font-size:16px; font-weight: bold;">
-                {{ item.comment }}
-              </span>
+              <span v-html="item.successComment" />
             </div>
-
           </router-link>
         </el-carousel-item>
       </el-carousel>
     </div>
-
-    <!-- <div>
-        <router-link to="/explore/examination-one">
-          <div class="div1 div-common">
-            <font class="font1"> 한 문 제 씩 탐 험 해 보 기 </font>
-          </div>
-        </router-link>
-        <router-link to="/explore/examination-word">
-        <div class="div2 div-common">
-          <font class="font1">단 어 암 기</font>
-        </div>
-        </router-link>
-        <router-link to="/explore/examination">
-        <div class="div3 div-common">
-          <font class="font1">모 의 고 사</font>
-          </div>
-      </router-link>
-    </div>
-    <div>
-      <router-link to="/explore/acceptance-review">
-      <div class="div4 div-common">
-        <font class="font1">합 격 후 기</font>
-        </div>
-        </router-link>
-      <router-link to="/explore/license-information">
-        <div class="div5 div-common">
-          <font class="font1">자 격 증 정 보</font>
-        </div>
-      </router-link>
-      <router-link to="">
-        <div class="div6 div-common">
-          <font class="font1">-</font>
-        </div>
-      </router-link>
-    </div>  -->
   </div>
 </template>
 
@@ -169,7 +131,7 @@ export default {
     return {
       licenseInfo: [],
       licenseIfs: [],
-      successComment: [],
+      successComments: [],
       exploreAllOptions: [
         {
           id: 1,
@@ -207,24 +169,6 @@ export default {
           title: '모든 도전 횟수',
           count: 5001
         }
-      ],
-
-      infoOptions: [
-        {
-          id: 1,
-          title: '주최',
-          content: 'Qnet'
-        },
-        {
-          id: 2,
-          title: '응시자 수 / 합격자 수',
-          content: '100000 / 524'
-        },
-        {
-          id: 3,
-          title: '필요한 학점',
-          content: '400'
-        }
       ]
     }
   },
@@ -242,11 +186,12 @@ export default {
 
       await fetchLicense(param).then(response => {
         var subjects = []
-        // console.log(response.item)
+
         response.item.subjects.forEach(x => {
           x.minScoreMsg = '최소 점수 : ' + x.minScore
           subjects.push(x)
         })
+
         this.licenseInfo = {
           id: response.item.id,
           name: response.item.name,
@@ -285,26 +230,26 @@ export default {
         licenseID: this.licenseInfo.licenseID
       }
       await fetchSuccessComment(param).then(response => {
-        var successComment = []
+        var successComments = []
         if (response.items.length === 0) {
-          successComment.push({
+          successComments.push({
             id: 1,
-            like: 0,
-            comment: '.',
-            title: '합격 후기가 존재하지 않습니다.',
+            likeCount: 0,
+            successComment: '.',
+            successTitle: '합격 후기가 존재하지 않습니다.',
             successScore: 0
           })
         }
         response.items.forEach(x => {
-          successComment.push({
+          successComments.push({
             id: x.item.id,
-            like: x.item.like,
-            comment: x.item.comment,
-            title: x.item.title,
+            likeCount: x.item.likeCount,
+            successTitle: x.item.successTitle,
+            successComment: x.item.successComment,
             successScore: x.item.successScore
           })
         })
-        this.successComment = successComment
+        this.successComments = successComments
       })
     }
   }
