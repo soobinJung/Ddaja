@@ -100,6 +100,9 @@ export default {
   methods: {
     popupState(value) {
       this.popupVal = value
+      if (!value) {
+        this.setSuccessComment()
+      }
     },
 
     async setSuccessComment() {

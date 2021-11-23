@@ -6,16 +6,22 @@
           <Warning />
           <el-col :span="24">
             <el-form-item style="margin-bottom: 20px;" prop="successTitle">
-              <MDinput v-model="postForm.successTitle" :maxlength="100" name="name" required>
-                Title
-              </MDinput>
+              <el-input
+                ref="successTitle"
+                v-model="postForm.successTitle"
+                placeholder="후기 제목을 입력해주세요."
+              />
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item style="margin-bottom: 40px;" prop="successScore">
-              <MDinput v-model="postForm.successScore" :maxlength="100" name="name" required>
-                합격 점수
-              </MDinput>
+              <el-input
+                ref="successScore"
+                v-model="postForm.successScore"
+                placeholder="합격 점수를 입력해주세요."
+                type="number"
+                @change="postForm.successScore = postForm.successScore > 100 ? 100 : postForm.successScore < 0 ? 0 : postForm.successScore"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -33,14 +39,13 @@
 </template>
 
 <script>
-import Tinymce from '@/components/Tinymce'
-import MDinput from '@/components/MDinput'
-import Warning from './Warning'
 import { insertSuccessComment } from '@/ddaja-api/user/explore/acceptance-review/acceptanceReview'
+import Tinymce from '@/components/Tinymce'
+import Warning from './Warning'
 
 export default {
   name: 'ArticleDetail',
-  components: { Tinymce, MDinput, Warning },
+  components: { Tinymce, Warning },
   props: {
     isEdit: {
       type: Boolean,
@@ -56,13 +61,35 @@ export default {
         likeCount: 0,
         successTitle: '',
         successComment: '',
-        successScore: 0
-      }
+        successScore: undefined
+      },
+      successScore: ''
+    }
+  }, watch: {
+    successScore() {
+      this.setSuccessScore(String(this.successScore).replace(/[^0-9]/g, ''))
     }
   },
 
   methods: {
     async saveSuccessComment() {
+      if (this.postForm.successTitle === '') {
+        this.$alert('제목을 입력 하세요')
+        this.$refs.successTitle.focus()
+        return
+      }
+
+      if (this.postForm.successComment === '') {
+        this.$alert('후기를 입력 하세요')
+        return
+      }
+
+      if (this.postForm.successScore === 0 || this.postForm.successScore === undefined) {
+        this.$alert('점수를 입력 하세요. ')
+        this.$refs.successScore.focus()
+        return
+      }
+
       var param = {
         lID: this.$session.get('licenseInfo').licenseID,
         uID: 3,
@@ -74,14 +101,25 @@ export default {
       }
 
       await insertSuccessComment(param).then(response => {
-        console.log(response)
+        this.$notify({
+          title: '후기',
+          message: '등록 완료 하였습니다.',
+          type: 'success',
+          duration: 2000
+        })
+        this.popupClose(false)
       })
     },
 
     popupClose(val) {
       this.$emit('close:popup', val)
+    },
+
+    setSuccessScore(val) {
+      this.successScore = val
     }
   }
+
 }
 </script>
 
