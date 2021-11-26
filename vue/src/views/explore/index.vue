@@ -84,19 +84,20 @@
     </div>
 
     <div class="block2">
+
       <div class="block4">
-        <span class="demonstration"> BEST 합격 후기 </span>
+        <router-link to="/explore/acceptance-review">
+          <span class="demonstration"> BEST 합격 후기 </span>
+        </router-link>
       </div>
       <el-carousel height="530px">
         <el-carousel-item v-for="item in successComments" :key="item.id" style="background-color:#f2f5f7; border:1px solid #e0e0e0; border-radius:30px">
           <router-link to="/explore/acceptance-review">
-
             <div style="padding: 5% 5% 2% 5%;">
               <span style="font-size:20px; font-weight: bold;">
                 <i class="el-icon-trophy" /> {{ item.successTitle }}
               </span>
             </div>
-
             <div style="width:100%; height: 50px; padding :0% 5% 7% 3%">
               <div style="width:15%; float:left; height: 100%; padding: 1.5% 2% 2% 2%;">
                 <span style="font-size:15px; font-weight: bold;">좋아요</span>
@@ -111,7 +112,6 @@
                 <span>{{ item.successScore }}</span>
               </div>
             </div>
-
             <div style="padding:0% 5% 0% 5%;">
               <span v-html="item.successComment" />
             </div>

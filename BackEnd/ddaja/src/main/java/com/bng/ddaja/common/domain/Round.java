@@ -12,20 +12,22 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table; 
+import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
-@ToString
+@Builder
 @EqualsAndHashCode(callSuper = false, of = "id")
-@Table(name = "TB_ROUND")
+@AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "TB_ROUND")
 @Entity
-public class Round {
+public class Round extends CommonEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +42,9 @@ public class Round {
 
     @Column(name="ROUND")
     private int round;
+
+    @Column(name = "IN_USE")
+    private boolean inUse;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "L_ID")

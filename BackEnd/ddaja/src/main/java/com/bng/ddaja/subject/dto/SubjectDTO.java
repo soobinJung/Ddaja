@@ -50,13 +50,12 @@ public class SubjectDTO extends CommonDTO {
     )
     private long lID;
     
-
     public SubjectDTO(Subject subject) {
-        id = subject.getId();
-        lID = subject.getLicense().getId();
-        name = subject.getName();
+        id       = subject.getId();
+        lID      = subject.getLicense().getId();
+        name     = subject.getName();
         minScore = subject.getMinScore();
-        inUse = subject.isInUse();
+        inUse    = subject.isInUse();
     }
 
     public Subject toEntity(License license){
