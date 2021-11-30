@@ -1,19 +1,18 @@
-package com.bng.ddaja.common.hateoas.licensesIf;
+package com.bng.ddaja.common.hateoas.round;
 
- 
 import com.bng.ddaja.common.dto.Link;
 import com.bng.ddaja.common.hateoas.CommonHateoas;
 
-public enum LicenseIfHateoas implements CommonHateoas {
-    SELF("GET", "https://api.ddaja.com/licenses/")
-    , UPDATE("PATCH", "https://api.ddaja.com/licenses/if/")
-    , REPLACE("PUT", "https://api.ddaja.com/licenses/if/")
-    , DELETE("DELETE", "https://api.ddaja.com/licenses/if/");
+public enum RoundHateoas implements CommonHateoas {
+    SELF("GET", "https://api.ddaja.com/round/")
+    , UPDATE("PATCH", "https://api.ddaja.com/round/if/")
+    , REPLACE("PUT", "https://api.ddaja.com/round/if/")
+    , DELETE("DELETE", "https://api.ddaja.com/round/if/");
 
     public String method;
     public String url;
     
-    LicenseIfHateoas(String method, String url) {
+    RoundHateoas(String method, String url) {
         this.method = method;
         this.url = url;
     }
@@ -25,5 +24,5 @@ public enum LicenseIfHateoas implements CommonHateoas {
             , new StringBuilder().append(url).append(Long.toString(id)).toString()
             , method
         );
-    }
+    } 
 }

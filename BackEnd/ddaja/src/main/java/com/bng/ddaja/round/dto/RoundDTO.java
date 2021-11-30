@@ -30,7 +30,7 @@ public class RoundDTO extends CommonDTO {
         name = "examDate"
         , example = ""
     )
-    private Date examDate;
+    private String examDate;
     
     @ApiModelProperty(
         name = "examYear"

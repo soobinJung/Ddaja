@@ -17,13 +17,10 @@ import lombok.AllArgsConstructor;
 import java.io.BufferedReader; 
 
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-
+/*
+** 응시자격별 국가기술자격 원서접수 및 합격 현황 조회
+*/
 @Service
 @AllArgsConstructor
 public class PassRateService {
@@ -77,12 +74,12 @@ public class PassRateService {
         System.out.println(sb.toString());
 
         System.out.println("BINSOO - XML 문서 보냄");
-        xmlToJson(sb.toString());
+        
 
-        return sb.toString();
+        return xmlToJson(sb.toString());
     }
 
-    public static void xmlToJson(String xml) throws Exception {
+    public static Object xmlToJson(String xml) throws Exception {
         System.out.println("BINSOO - XML 문서 받음 변환시도");
 
         JSONObject jObject = XML.toJSONObject(xml);
@@ -91,10 +88,14 @@ public class PassRateService {
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         
         Object json = mapper.readValue(jObject.toString(), Object.class);
-        String output = mapper.writeValueAsString(json);
 
+
+        String output = mapper.writeValueAsString(json);
         System.out.println(" == xmlToJson");
         System.out.println(output);
+
+
+        return json;
     }
 
 }

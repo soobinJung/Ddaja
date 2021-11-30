@@ -35,7 +35,7 @@ public class Round extends CommonEntity {
     private long id;
 
     @Column(name="EXAM_DATE")
-    private Date examDate;
+    private String examDate;
 
     @Column(name="EXAM_YEAR")
     private String examYear;

@@ -46,13 +46,11 @@ public class SubjectService {
 
     public SubjectDTO deleteSubject(SubjectDTO subjectDTO){
         Subject subject = subjectRepository.findById(subjectDTO.getId());
-
         SubjectDTO dto = new SubjectDTO(subject);
-        dto.checkoutValue();
         dto.setInUse(false);
-
-        subjectRepository.save(dto.toEntity(subject.getLicense()));
- 
-        return new SubjectDTO(subjectRepository.findById(subjectDTO.getId()));
+        subjectRepository.save(
+            dto.toEntity(subject.getLicense())
+        );
+        return dto;
     }
 }
