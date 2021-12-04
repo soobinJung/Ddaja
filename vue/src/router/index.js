@@ -12,7 +12,7 @@ import adminRouter from './admin'
 
 export const constantRoutes = [
   {
-    path: '/login', 
+    path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
   },

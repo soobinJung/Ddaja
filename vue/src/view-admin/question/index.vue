@@ -43,42 +43,43 @@
       </div>
     </div>
 
-
-    <div style = "width: 90%; margin: 0 5% 0 5%;">
-      <div style = "width: 40%; float:left;">
+    <div style="width: 90%; margin: 0 5% 0 5%;">
+      <div style="width: 40%; float:left;">
         <el-table
-          ref   = "singleTable"
-          :data = "examinationList"
-          style = "width: 100%">
+          ref="singleTable"
+          :data="examinationList"
+          style="width: 100%"
+        >
           <el-table-column
-            type  = "index"
-            width = "50">
-          </el-table-column>
+            type="index"
+            width="50"
+          />
           <el-table-column
-            property = "name"
-            label    = "시험명">
-          </el-table-column>
+            property="name"
+            label="시험명"
+          />
         </el-table>
       </div>
       <div style="width: 60%; float:left; padding : 0 0 0 5%">
         <el-table
-          :data = "questionsList"
-          style = "width: 100%">
+          :data="questionsList"
+          style="width: 100%"
+        >
           <el-table-column type="expand">
             <template slot-scope="props">
-              <div v-for="vo in props.row.answers" v-bind:key="vo.answersID">
-                <span >{{ vo.answers }}</span>
+              <div v-for="vo in props.row.answers" :key="vo.answersID">
+                <span>{{ vo.answers }}</span>
               </div>
             </template>
           </el-table-column>
           <el-table-column
             label="문제"
-            prop="question">
-          </el-table-column>
+            prop="question"
+          />
           <el-table-column
-              label="Date"
-              prop="date">
-          </el-table-column>
+            label="Date"
+            prop="date"
+          />
         </el-table>
       </div>
     </div>
@@ -106,7 +107,7 @@ import _ from 'lodash'
 export default {
   name: 'AdminQuestion',
   components: {
-    Pagination,
+    Pagination
     // updateDrawer,
     // insertDrawer
   },
@@ -116,86 +117,85 @@ export default {
       tableData: [],
       totalCount: 0,
       param: {
-        licenseID  : 0
-        , examYear : 0
+        licenseID: 0,
+        examYear: 0
       },
       selectList: [],
       updateDrawerVal: false,
-      insertDrawerVal: false
+      insertDrawerVal: false,
 
-      , examinationList: [],
+      examinationList: [],
 
-
-        questionsList: [
-          {
-          date     : '2016-05-03',
-          question : 'JAVA 의 특징',
-          answers  : [
-            { 
-              answersID : 1
-              , answers : '객체 지향 언어'
+      questionsList: [
+        {
+          date: '2016-05-03',
+          question: 'JAVA 의 특징',
+          answers: [
+            {
+              answersID: 1,
+              answers: '객체 지향 언어'
             },
-            { 
-              answersID : 2
-              , answers : '절차 지향 언어'
+            {
+              answersID: 2,
+              answers: '절차 지향 언어'
             },
-            { 
-              answersID : 3
-              , answers : '구조체'
+            {
+              answersID: 3,
+              answers: '구조체'
             },
-            { 
-              answersID : 4
-              , answers : '네트워크 언어'
+            {
+              answersID: 4,
+              answers: '네트워크 언어'
             },
-            { 
-              answersID : 5
-              , answers : '안드로이드 언어'
+            {
+              answersID: 5,
+              answers: '안드로이드 언어'
             }
           ]
-        }
-        , {
-          date     : '2018-05-03',
-          question : 'JAVA 의 특징',
-          answers  : [
-            { 
-              answersID : 1
-              , answers : '객체 지향 언어'
+        },
+        {
+          date: '2018-05-03',
+          question: 'JAVA 의 특징',
+          answers: [
+            {
+              answersID: 1,
+              answers: '객체 지향 언어'
             },
-            { 
-              answersID : 2
-              , answers : '절차 지향 언어'
+            {
+              answersID: 2,
+              answers: '절차 지향 언어'
             },
-            { 
-              answersID : 3
-              , answers : '구조체'
+            {
+              answersID: 3,
+              answers: '구조체'
             },
-            { 
-              answersID : 4
-              , answers : '네트워크 언어'
+            {
+              answersID: 4,
+              answers: '네트워크 언어'
             },
-            { 
-              answersID : 5
-              , answers : '안드로이드 언어'
+            {
+              answersID: 5,
+              answers: '안드로이드 언어'
             }
           ]
         }]
     }
-  }
+  },
 
-  , created() {
+  created() {
     this.createSetting()
-  }
-  
-  , methods: {
+  },
 
-    async createSetting(){
-      await this.getLicense().then( response => {
+  methods: {
+
+    async createSetting() {
+      await this.getLicense().then(response => {
         this.param.licenseID = this.licenseOptions[0].value
       })
       await this.getRoundList()
-    }
+    },
 
-    , async getLicense() {
+    async getLicense() {
       await licenseList().then(response => {
         response.items.forEach(x => {
           var type = (x.item.type === 'WRITING') ? '필기' : '실기'
@@ -203,51 +203,47 @@ export default {
           this.licenseOptions.push({ value: x.item.id, label: label })
         })
       })
-    }
-    
-    , async getRoundList(){
+    },
+
+    async getRoundList() {
       var param = {
-        licenseID  : this.param.licenseID
-        , examYear : this.param.examYear
+        licenseID: this.param.licenseID,
+        examYear: this.param.examYear
       }
 
-      await fetchList(param).then( response => {
+      await fetchList(param).then(response => {
         this.examinationList = []
-        response.items.forEach( x => {
-          
-          let examDate = x.item.examDate
-          let name = examDate.substring( 0, 4 ) 
-                    + ' / '
-                    + examDate.substring( 4, 6 )
-                    + ' / '
-                    + examDate.substring( 6, 8 )
-                    + ' - ' + x.item.round + '회차 기출문제'
+        response.items.forEach(x => {
+          const examDate = x.item.examDate
+          const name = examDate.substring(0, 4) +
+                    ' / ' +
+                    examDate.substring(4, 6) +
+                    ' / ' +
+                    examDate.substring(6, 8) +
+                    ' - ' + x.item.round + '회차 기출문제'
 
           this.examinationList.push({
-            id          : x.item.id
-            , examDate  : x.item.examDate
-            , examYear  : x.item.examYear
-            , inUse     : x.item.inUse
-            , isCreated : x.item.isCreated
-            , lid       : x.item.lid
-            , round     : x.item.round
-            , name      : name
+            id: x.item.id,
+            examDate: x.item.examDate,
+            examYear: x.item.examYear,
+            inUse: x.item.inUse,
+            isCreated: x.item.isCreated,
+            lid: x.item.lid,
+            round: x.item.round,
+            name: name
           })
         })
       })
-    } 
+    },
 
-
-    ,
-    
     deleteWord() {
     //   var wordIdList = _.map(this.selectList, 'id')
 
-    //   for (var index in wordIdList) {
-    //     await this.wordDelete(wordIdList[index])
-    //   }
+      //   for (var index in wordIdList) {
+      //     await this.wordDelete(wordIdList[index])
+      //   }
 
-    //   console.log('====')
+      //   console.log('====')
 
     //   await this.clickSearch()
     // },
@@ -278,9 +274,9 @@ export default {
 
     async clickSearch() {
       await this.getRoundList()
-    }
-    
-    , handleSelectionChange(val) {
+    },
+
+    handleSelectionChange(val) {
       this.selectList = []
       val.forEach(x => {
         this.selectList.push(x.item)
@@ -326,6 +322,6 @@ width: 200px;
 .btn1{
 width: 100px;
 }
-} 
+}
 }
 </style>
