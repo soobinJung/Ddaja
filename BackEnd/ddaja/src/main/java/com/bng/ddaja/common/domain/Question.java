@@ -9,21 +9,23 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table; 
-import java.util.List;
+import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import java.util.List;
 
 @Getter
-@ToString
-@EqualsAndHashCode
-@Table(name = "TB_QUESTION")
+@Builder
+@EqualsAndHashCode(callSuper = false, of = "id")
+@AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "TB_QUESTION")
 @Entity
-public class Question {
+public class Question extends CommonEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,25 +39,25 @@ public class Question {
     private String content;
 
     @Column(name="SCORE")
-    private long score;
+    private int score;
 
     @Column(name="NO")
-    private long no;
+    private int no;
 
     @Column(name="ANSWER_ONE")
-    private String ANSWER_ONE;
+    private String answerOne;
 
     @Column(name="ANSWER_TWO")
-    private String ANSWER_TWO;
+    private String answerTwo;
 
     @Column(name="ANSWER_THR")
-    private String ANSWER_THR;
+    private String answerThr;
 
     @Column(name="ANSWER_FOUR")
-    private String ANSWER_FOUR;
+    private String answerFour;
 
     @Column(name="ANSWER_FIVE")
-    private String ANSWER_FIVE;
+    private String answerFive;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "L_ID")
@@ -68,6 +70,9 @@ public class Question {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "R_ID")
     private Round round;
+    
+    @Column(name = "IN_USE")
+    private boolean inUse;
 
     @OneToMany(mappedBy = "question")
     private List<StateQuestion> stateQuestions;

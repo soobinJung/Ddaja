@@ -1,18 +1,18 @@
-package com.bng.ddaja.common.hateoas.round;
+package com.bng.ddaja.common.hateoas.question;
 
 import com.bng.ddaja.common.dto.Link;
 import com.bng.ddaja.common.hateoas.CommonHateoas;
 
-public enum RoundHateoas implements CommonHateoas {
-    SELF("GET", "https://api.ddaja.com/round/")
-    , UPDATE("PATCH", "https://api.ddaja.com/round/")
-    , REPLACE("PUT", "https://api.ddaja.com/round/")
-    , DELETE("DELETE", "https://api.ddaja.com/round/");
+public enum QuestionHateoas implements CommonHateoas{
+    SELF("GET", "https://api.ddaja.com/question/")
+    , UPDATE("PATCH", "https://api.ddaja.com/question/")
+    , REPLACE("PUT", "https://api.ddaja.com/question/")
+    , DELETE("DELETE", "https://api.ddaja.com/question/");
 
     public String method;
     public String url;
     
-    RoundHateoas(String method, String url) {
+    QuestionHateoas(String method, String url) {
         this.method = method;
         this.url = url;
     }

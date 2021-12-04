@@ -18,6 +18,7 @@ public class SuccessCommentSpec {
     
     public static Specification<SuccessComment> inUseEqual(final Boolean inUse) {
         return new Specification<SuccessComment>() {
+            @Override
             public  Predicate toPredicate(Root<SuccessComment> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
                 if (inUse == null) return builder.conjunction();
                 return builder.equal(root.get("inUse"), inUse);
@@ -27,6 +28,7 @@ public class SuccessCommentSpec {
 
     public static Specification<SuccessComment> equalLicenseID(final long licenseID){
         return new Specification<SuccessComment>(){
+            @Override
             public Predicate toPredicate(Root<SuccessComment> root, CriteriaQuery<?> query, CriteriaBuilder builder ){
                 if(licenseID == 0) return builder.conjunction();
                 Join<SuccessComment, License> j = root.join("license", JoinType.INNER);
@@ -35,3 +37,4 @@ public class SuccessCommentSpec {
         };
     }
 }
+ 

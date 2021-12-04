@@ -1,8 +1,6 @@
 package com.bng.ddaja.successComment.service;
 
-import com.bng.ddaja.common.domain.License;
 import com.bng.ddaja.common.domain.SuccessComment;
-import com.bng.ddaja.common.domain.User;
 import com.bng.ddaja.licenses.repository.LicensesRepository;
 import com.bng.ddaja.successComment.dto.SuccessCommentDTO;
 import com.bng.ddaja.successComment.dto.SuccessCommentSearch;

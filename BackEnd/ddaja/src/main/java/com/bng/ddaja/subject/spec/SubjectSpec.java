@@ -22,6 +22,7 @@ public class SubjectSpec {
 
     public static Specification<Subject> inUseEqual(final Boolean inUse){
         return new Specification<Subject>(){
+            @Override
             public Predicate toPredicate(Root<Subject> root, CriteriaQuery<?> query, CriteriaBuilder builder){
                 if (inUse == null) return builder.conjunction();
                 return builder.equal(root.get("inUse"), inUse);
