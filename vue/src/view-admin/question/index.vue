@@ -55,9 +55,12 @@
             width="50"
           />
           <el-table-column
-            property="name"
             label="시험명"
-          />
+          >
+            <template slot-scope="props">
+              <span @click="detailRound(props.row)">{{ props.row.name }}</span>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
       <div style="width: 60%; float:left; padding : 0 0 0 5%">
@@ -67,18 +70,21 @@
         >
           <el-table-column type="expand">
             <template slot-scope="props">
+              <div>
+                {{ props.row.content }}
+              </div>
               <div v-for="vo in props.row.answers" :key="vo.answersID">
-                <span>{{ vo.answers }}</span>
+                <span>{{ vo.answersID }} . {{ vo.answers }}</span>
               </div>
             </template>
           </el-table-column>
           <el-table-column
             label="문제"
-            prop="question"
+            prop="title"
           />
           <el-table-column
-            label="Date"
-            prop="date"
+            label="점수"
+            prop="score"
           />
         </el-table>
       </div>
@@ -99,7 +105,7 @@
 
 <script>
 import Pagination from '@/components/Pagination'
-import { licenseList, fetchList } from '@/ddaja-api/admin/examination/Examination'
+import { licenseList, fetchRoundList, fetchQuestionList } from '@/ddaja-api/admin/examination/Examination'
 // import updateDrawer from './components/updateDrawer'
 // import insertDrawer from './components/insertDrawer'
 import _ from 'lodash'
@@ -126,59 +132,7 @@ export default {
 
       examinationList: [],
 
-      questionsList: [
-        {
-          date: '2016-05-03',
-          question: 'JAVA 의 특징',
-          answers: [
-            {
-              answersID: 1,
-              answers: '객체 지향 언어'
-            },
-            {
-              answersID: 2,
-              answers: '절차 지향 언어'
-            },
-            {
-              answersID: 3,
-              answers: '구조체'
-            },
-            {
-              answersID: 4,
-              answers: '네트워크 언어'
-            },
-            {
-              answersID: 5,
-              answers: '안드로이드 언어'
-            }
-          ]
-        },
-        {
-          date: '2018-05-03',
-          question: 'JAVA 의 특징',
-          answers: [
-            {
-              answersID: 1,
-              answers: '객체 지향 언어'
-            },
-            {
-              answersID: 2,
-              answers: '절차 지향 언어'
-            },
-            {
-              answersID: 3,
-              answers: '구조체'
-            },
-            {
-              answersID: 4,
-              answers: '네트워크 언어'
-            },
-            {
-              answersID: 5,
-              answers: '안드로이드 언어'
-            }
-          ]
-        }]
+      questionsList: []
     }
   },
 
@@ -211,7 +165,7 @@ export default {
         examYear: this.param.examYear
       }
 
-      await fetchList(param).then(response => {
+      await fetchRoundList(param).then(response => {
         this.examinationList = []
         response.items.forEach(x => {
           const examDate = x.item.examDate
@@ -231,6 +185,65 @@ export default {
             lid: x.item.lid,
             round: x.item.round,
             name: name
+          })
+        })
+      })
+    },
+
+    async detailRound(round) {
+      var param = {
+        licenseID: round.lid,
+        roundID: round.id
+      }
+      await fetchQuestionList(param).then(response => {
+        this.questionsList = []
+
+        response.items.forEach(x => {
+          console.log(x.item)
+          const answers = []
+
+          if (x.item.answerOne != '' && x.item.answerOne != undefined) {
+            answers.push({
+              answersID: 1,
+              answers: x.item.answerOne
+            })
+          }
+
+          if (x.item.answerTwo != '' && x.item.answerTwo != undefined) {
+            answers.push({
+              answersID: 2,
+              answers: x.item.answerTwo
+            })
+          }
+
+          if (x.item.answerThr != '' && x.item.answerThr != undefined) {
+            answers.push({
+              answersID: 3,
+              answers: x.item.answerThr
+            })
+          }
+
+          if (x.item.answerTwo != '' && x.item.answerTwo != undefined) {
+            answers.push({
+              answersID: 4,
+              answers: x.item.answerTwo
+            })
+          }
+
+          if (x.item.answerFive != '' && x.item.answerFive != undefined) {
+            answers.push({
+              answersID: 5,
+              answers: x.item.answerFive
+            })
+          }
+
+          this.questionsList.push({
+            id: x.item.id,
+            title: x.item.title,
+            content: x.item.content,
+            score: x.item.score,
+            answers: answers,
+            createdDate: x.item.createdDate
           })
         })
       })

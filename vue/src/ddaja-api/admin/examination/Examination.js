@@ -1,12 +1,24 @@
 import request from '@/utils/request'
 
-export function fetchList(param) {
+export function fetchRoundList(param) {
   return request({
     url: '/round',
     method: 'get',
     params: {
-      licenseID: param.licenseID || '',
+      licenseID: param.licenseID || 0,
       examYear: param.examYear || '',
+      inUse: true
+    }
+  })
+}
+
+export function fetchQuestionList(param) {
+  return request({
+    url: '/question',
+    method: 'get',
+    params: {
+      licenseID: param.licenseID || 0,
+      roundID: param.roundID || 0,
       inUse: true
     }
   })
