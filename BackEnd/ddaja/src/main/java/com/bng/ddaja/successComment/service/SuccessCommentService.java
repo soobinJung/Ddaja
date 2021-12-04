@@ -23,6 +23,7 @@ public class SuccessCommentService {
     private UserRepository userRepository;
 
     public Page<SuccessCommentDTO> getAllSuccessCommentBySuccessCommentSearch(SuccessCommentSearch successCommentSearch) {
+        
         return successCommentRepository.findAll(
             successCommentSearch.toSpecification()
             , successCommentSearch.toPageable()
@@ -32,8 +33,6 @@ public class SuccessCommentService {
 
     public SuccessCommentDTO saveSuccessComent( SuccessCommentDTO successCommentDTO ){
         
-        successCommentDTO.checkValue();
-
         SuccessComment successComent = successCommentDTO.toEntity(
             licensesRepository.findById(successCommentDTO.getLID())
             , userRepository.findById(successCommentDTO.getUID())

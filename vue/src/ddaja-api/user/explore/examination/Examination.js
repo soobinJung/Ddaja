@@ -5,9 +5,9 @@ export function fetchList(param) {
     url: '/round',
     method: 'get',
     params: {
-      licenseID: param.licenseID || '',
-      examYear: param.examYear || '',
-      inUse: true
+      licenseID : param.licenseID || '',
+      examYear  : param.examYear  || '',
+      inUse     : true
     }
   })
 }

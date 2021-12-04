@@ -36,7 +36,7 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js'),
+    
     proxy: {
       '^/kakao': {
         target: 'https://kauth.kakao.com',

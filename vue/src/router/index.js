@@ -12,18 +12,18 @@ import adminRouter from './admin'
 
 export const constantRoutes = [
   {
-    path: '/login',
-    component: () => import('@/views-copy/login/index'),
+    path: '/login', 
+    component: () => import('@/views/login/index'),
     hidden: true
   },
   {
     path: '/404',
-    component: () => import('@/views-copy/error-page/404'),
+    component: () => import('@/views/error-page/404'),
     hidden: true
   },
   {
     path: '/401',
-    component: () => import('@/views-copy/error-page/401'),
+    component: () => import('@/views/error-page/401'),
     hidden: true
   },
   {
@@ -66,13 +66,13 @@ export const asyncRoutes = [
     children: [
       {
         path: '401',
-        component: () => import('@/views-copy/error-page/401'),
+        component: () => import('@/views/error-page/401'),
         name: 'Page401',
         meta: { title: '401', noCache: true }
       },
       {
         path: '404',
-        component: () => import('@/views-copy/error-page/404'),
+        component: () => import('@/views/error-page/404'),
         name: 'Page404',
         meta: { title: '404', noCache: true }
       }
