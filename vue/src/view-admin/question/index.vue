@@ -58,7 +58,7 @@
             label="시험명"
           >
             <template slot-scope="props">
-              <span @click="detailRound(props.row)">{{ props.row.name }}</span>
+              <span style="cursor: pointer;" @click="detailRound(props.row)">{{ props.row.name }}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -95,11 +95,12 @@
       @refresh="fetchList()"
       @close:updatedrawer="updateDrawerStatus"
     />
+    -->
     <insertDrawer
       :popup-val="insertDrawerVal"
       @refresh="fetchList()"
       @close:insertdrawer="insertDrawerStatus"
-    /> -->
+    />
   </div>
 </template>
 
@@ -107,15 +108,15 @@
 import Pagination from '@/components/Pagination'
 import { licenseList, fetchRoundList, fetchQuestionList } from '@/ddaja-api/admin/examination/Examination'
 // import updateDrawer from './components/updateDrawer'
-// import insertDrawer from './components/insertDrawer'
+import insertDrawer from './components/insertDrawer'
 import _ from 'lodash'
 
 export default {
   name: 'AdminQuestion',
   components: {
-    Pagination
-    // updateDrawer,
-    // insertDrawer
+    Pagination,
+    //,  updateDrawer
+    insertDrawer
   },
   data() {
     return {
@@ -124,7 +125,7 @@ export default {
       totalCount: 0,
       param: {
         licenseID: 0,
-        examYear: 0
+        examYear: ''
       },
       selectList: [],
       updateDrawerVal: false,
