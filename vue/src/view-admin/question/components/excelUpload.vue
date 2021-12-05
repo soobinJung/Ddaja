@@ -14,8 +14,8 @@ import XLSX from 'xlsx'
 export default {
   name: 'ExcelUpload',
   props: {
-        beforeUpload: Function, // eslint-disable-line
-        onSuccess: Function// eslint-disable-line
+        beforeUpload: Function,  
+        onSuccess: Function 
   },
   data() {
     return {

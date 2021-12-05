@@ -115,7 +115,6 @@
 export default {
   name: 'MdInput',
   props: {
-    /* eslint-disable */
     icon: String,
     name: String,
     type: {

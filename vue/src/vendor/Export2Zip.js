@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { saveAs } from 'file-saver'
 import JSZip from 'jszip'
 
