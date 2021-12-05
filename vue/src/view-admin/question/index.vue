@@ -98,7 +98,7 @@
     -->
     <insertDrawer
       :popup-val="insertDrawerVal"
-      @refresh="fetchList()"
+      @refresh="createSetting()"
       @close:insertdrawer="insertDrawerStatus"
     />
   </div>
@@ -144,13 +144,14 @@ export default {
   methods: {
 
     async createSetting() {
-      await this.getLicense().then(response => {
+      await this.getLicense().then( response => {
         this.param.licenseID = this.licenseOptions[0].value
       })
       await this.getRoundList()
     },
 
     async getLicense() {
+      this.licenseOptions = []
       await licenseList().then(response => {
         response.items.forEach(x => {
           var type = (x.item.type === 'WRITING') ? '필기' : '실기'
@@ -200,7 +201,6 @@ export default {
         this.questionsList = []
 
         response.items.forEach(x => {
-          console.log(x.item)
           const answers = []
 
           if (x.item.answerOne != '' && x.item.answerOne != undefined) {

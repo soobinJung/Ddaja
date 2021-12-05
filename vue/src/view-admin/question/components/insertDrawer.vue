@@ -96,9 +96,9 @@
 
 <script>
 import ExcelUpload from '../components/excelUpload'
-import { licenseList, insertRound } from '@/ddaja-api/admin/examination/Examination'
+import { licenseList, insertRound, insertQuestion } from '@/ddaja-api/admin/examination/Examination'
 
-import { wordInsert, wordQuestionInsert } from '@/ddaja-api/admin/word/Word'
+import { wordInsert } from '@/ddaja-api/admin/word/Word'
 
 export default {
   name: 'AdminQuestionInsert',
@@ -132,42 +132,62 @@ export default {
   },
   methods: {
     async onSubmit() {
-      var param = {
+      let param = {
         lID: this.param.lID,
         examYear: this.param.examYear,
         examDate: this.param.examDate,
         round: this.param.round,
-        inUse: this.param.inUse
+        inUse: this.param.inUse,
+        rID : 0, 
+        sID : 0, 
+        no         : 0,
+        title      : '',
+        content    : '',
+        answerOne  : '',
+        answerTwo  : '',
+        answerThr  : '',
+        answerFour : '',
+        answerFive : '',
+        score      : '',
       }
       await insertRound(param).then(response => {
-        console.log(response)
+        param.rID = response.item.id
       })
 
-      // if (!this.verification()) { return }
-      // await this.wordInsert().then()
+      if (this.tableData.length === 0) { return }
+      this.loading = true
 
-      // if (this.tableData.length === 0) { return }
-      // this.loading = true
-      // for (var i in this.tableData) {
-      //   var x = this.tableData[i]
-      //   this.param.answer = x.answer
-      //   this.param.content = x.content
-      //   await this.wordQuestionInsert().then()
-      // }
-      // this.loading = false
-      // this.popupClose()
-      // this.$alert('SAVE SUCESS')
-    },
+      for (var i in this.tableData) {
+        var x = this.tableData[i]
 
-    async wordInsert() {
+        param.no = x.no
+        param.sID = x.sid
+        param.title = x.title
+        param.content = x.content
+        param.answerOne = x.answerOne
+        param.answerTwo = x.answerTwo
+        param.answerThr = x.answerThr
+        param.answerFour = x.answerFour
+        param.answerFive = x.answerFive
+        param.score = x.score
+
+        await this.insertQuestion(param).then()
+      }
+      this.loading = false
+      this.popupClose()
+      this.$alert('SAVE SUCESS')
+    }
+
+    , async insertQuestion(param){
+      await insertQuestion(param).then()
+    }
+
+    , async wordInsert() {
       await wordInsert(this.param).then(response => {
         this.param.wID = response.item.id
       })
     },
-    async wordQuestionInsert() {
-      console.log(this.param)
-      await wordQuestionInsert(this.param).then()
-    },
+
     async getLicense() {
       await licenseList().then(response => {
         response.items.forEach(x => {

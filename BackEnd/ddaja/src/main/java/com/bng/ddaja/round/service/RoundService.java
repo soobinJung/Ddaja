@@ -18,26 +18,33 @@ public class RoundService {
     private RoundRepository roundRepository;
     private LicensesRepository licensesRepository;
 
+
     public Page<RoundDTO> getAllRoundSearch(RoundSearch roundSearch){
+        
         return roundRepository.findAll(
             roundSearch.toSpecification()
             , roundSearch.toPageable()
         ).map(vo -> new RoundDTO(vo));
     }
 
+
     public RoundDTO saveRound(RoundDTO roundDTO){
-        roundRepository.save(
+        
+        long rID = roundRepository.save(
             roundDTO.toEntity(licensesRepository.findById(roundDTO.getLID()))
-        );
-        return roundDTO;
+        ).getId();
+        return new RoundDTO(roundRepository.findById(rID));
     }
 
+
     public RoundDTO deleteRound(long roundID){
+    
         RoundDTO dto = new RoundDTO(roundRepository.findById(roundID));
         dto.setInUse(false);
         roundRepository.save(
             dto.toEntity(licensesRepository.findById(dto.getLID()))
         );
+        
         return dto;
     }
 }

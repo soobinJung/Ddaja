@@ -74,7 +74,7 @@ export function insertQuestion(param) {
     url: '/question',
     method: 'post',
     params: {
-      rID: param.rID || 0,
+      rID: param.rID ,
       lID: param.lID || 0,
       sID: param.sID || 0,
       no: param.no || 0,

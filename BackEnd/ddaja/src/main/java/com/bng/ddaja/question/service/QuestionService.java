@@ -22,6 +22,7 @@ public class QuestionService {
     private LicensesRepository licensesRepository;
     private SubjectRepository subjectRepository;
 
+    
     public Page<QuestionDTO> getAllQuestionByQuestionSearch(QuestionSearch questionSearch) {
         return questionRepository.findAll(
             questionSearch.toSpecification()
@@ -29,16 +30,15 @@ public class QuestionService {
         ).map(vo -> new QuestionDTO(vo));
     }
 
+
     public QuestionDTO saveQuestion( QuestionDTO questionDTO ){
         
-        Question question = questionDTO.toEntity(
+        long qID = questionRepository.save( questionDTO.toEntity(
             roundRepository.findById(questionDTO.getRID())
             , licensesRepository.findById(questionDTO.getLID())
             , subjectRepository.findById(questionDTO.getSID())
-        );
+        )).getId();
 
-        questionRepository.save(question);
-
-        return new QuestionDTO(question);
+        return new QuestionDTO(questionRepository.findById(qID));
     }
 }
