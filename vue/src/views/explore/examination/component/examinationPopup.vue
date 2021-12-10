@@ -6,16 +6,31 @@
         :before-close="handleClose"> 
         <div class="div1">
             <div class="div1-1">
-                <span class="span1">2020년 10월 11일 3회차 모의고사</span>
+                <span class="span1">{{rName}}</span>
             </div> 
         </div> 
-        <div class="div2" v-for="(quiz) in testJson" :key="quiz.examinationNo" >
+        <div 
+            class = "div2" 
+            v-for = "(quiz) in questionList" 
+            :key  = "quiz.id" >
             <div class="div2-1">
                 <div class="div2-1-1">
-                    <span class="span1"> {{quiz.examinationNo}}. {{quiz.examinationQuestion}}  </span>  
+                    <span class="span1"> {{quiz.no}}. {{quiz.title}}  </span>  
                 </div> 
-                <div class="div2-1-2" v-for="(answer, index) in quiz.example" :key="answer">
-                    <span class="span1"> <el-checkbox v-model="answerTest" >{{index+1}} . {{answer}}</el-checkbox> </span> 
+                <div class="div2-1-2" v-if="quiz.answerOne != ''">
+                    <span class="span1"> <el-checkbox v-model="quiz.answer[0]" @change="checkAnswer(quiz, 0)">1 . {{quiz.answerOne}}</el-checkbox> </span> 
+                </div>  
+                <div class="div2-1-2" v-if="quiz.answerTwo != ''">
+                    <span class="span1"> <el-checkbox v-model="quiz.answer[1]" @change="checkAnswer(quiz, 1)" >2 . {{quiz.answerTwo}}</el-checkbox> </span> 
+                </div>  
+                <div class="div2-1-2" v-if="quiz.answerThr != ''">
+                    <span class="span1"> <el-checkbox v-model="quiz.answer[2]" @change="checkAnswer(quiz, 2)" >3 . {{quiz.answerThr}}</el-checkbox> </span> 
+                </div>  
+                <div class="div2-1-2" v-if="quiz.answerFour != ''">
+                    <span class="span1"> <el-checkbox v-model="quiz.answer[3]" @change="checkAnswer(quiz, 3)" >4 . {{quiz.answerFour}}</el-checkbox> </span> 
+                </div>  
+                <div class="div2-1-2" v-if="quiz.answerFive != ''">
+                    <span class="span1"> <el-checkbox v-model="quiz.answer[4]" @change="checkAnswer(quiz, 4)" >5 . {{quiz.answerFive}}</el-checkbox> </span> 
                 </div>  
             </div>
         </div>
@@ -31,40 +46,100 @@
 </template>
 
 <script>
-import testJson from '@/assets/jsonFile/subjectExaminationTestJson1'
+import { fetchListByQuestions } from '@/ddaja-api/user/explore/examination/Examination.js'
 import community from '@/views/explore/communication'
 
 export default {
     name: 'examinationPopup'
     , data() {
         return { 
-            testJson : testJson
-            , communityPopupVal : false
+            communityPopupVal : false
             , quizType : 1
             , answerTest: false
+            , questionList : []
         }
     }
     , components : {
-        testJson
-        , community
+        community
     }
     , props: {
-        popupVal: {} 
+        popupVal : {
+            type : Boolean
+            , defalut: false
+        } 
+        , rID    : {
+            type : Number
+            , defalut : 0
+        }
+        , rName    : {
+            type : String
+            , defalut : ''
+        } 
     }
-    , watch: { }
-    ,methods: { 
-        popupClose(val) { 
+    
+    , watch: {
+        rID ( val ){
+            if(val != 0){
+                this.fetchList()
+            }
+        }
+    }
+    
+    , methods: { 
+        async fetchList(){
+            let param = {
+                licenseID : 0,
+                roundID   : this.rID || 0,
+                SubjectID :  0,
+            }
+            await fetchListByQuestions(param).then( response => {
+                response.items.forEach( x => {
+                    this.questionList.push({
+                        id           : x.item.id
+                        , no         : x.item.no
+                        , title      : x.item.title
+                        , content    : x.item.content
+                        , answerOne  : x.item.answerOne
+                        , answerTwo  : x.item.answerTwo
+                        , answerThr  : x.item.answerThr
+                        , answerFour : x.item.answerFour
+                        , answerFive : x.item.answerFive
+                        , answer     : [false, false, false, false, false]
+                        , created    : x.item.created
+                        , createdDate: x.item.createdDate
+                        , inUse      : x.item.inUse
+                        , isCreated  : x.item.isCreated
+                        , score      : x.item.score
+                        , lid        : x.item.lid
+                        , rid        : x.item.rid
+                        , sid        : x.item.sid
+                    })
+                })
+            })
+        }
+
+        , checkAnswer (quiz, index){
+            let answer = []
+            quiz.answer.forEach( (x, i) => {
+                answer.push(index === i ? true : false)
+            })
+            quiz.answer = answer
+        }
+
+        , popupClose(val) { 
             // 시험 popup 닫는다.
             this.$emit('close:examination', val) 
         }
+
         , handleClose(done) {
             // 클릭 이벤트가 popup 벗어나면 확인창.
-        this.$confirm('정말 끝내시겠습니까 ? 😡')
+        this.$confirm('정말 끝내시겠습니까 ?')
             .then(_ => {  
                 this.popupClose(false);
             })
             .catch(_ => {});
         } 
+
         , communityPopupStatus(val){
             if(val){
                 // 토론창 열기 

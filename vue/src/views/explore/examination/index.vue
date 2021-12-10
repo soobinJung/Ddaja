@@ -34,7 +34,9 @@
       </el-table>
     </div>
     <examinationPopup
-      :popup-val="examPopupStatusVal"
+      :popup-val = "examPopupStatusVal"
+      :rID       = "rID"
+      :rName     = "rName"
       @close:examination="examPopupStatus"
     />
     <gradingPopup
@@ -46,7 +48,7 @@
 
 <script>
 
-import { fetchList } from '@/ddaja-api/user/explore/examination/Examination.js'
+import { fetchListByRounds } from '@/ddaja-api/user/explore/examination/Examination.js'
 import examinationPopup from '@/views/explore/examination/component/examinationPopup'
 import gradingPopup from '@/views/explore/examination/component/gradingPopup'
 
@@ -58,11 +60,13 @@ export default {
   },
   data() {
     return {
-      tableData: [],
-      search: '',
-      radio1: '1',
-      examPopupStatusVal: false,
-      gradingPopupStatusVal: false
+      rID : 0 
+      , rName : ''
+      , tableData: []
+      , search: ''
+      , radio1: '1'
+      , examPopupStatusVal: false
+      , gradingPopupStatusVal: false
     }
   },
 
@@ -80,11 +84,11 @@ export default {
         licenseID: this.licenseInfo.licenseID,
         examYear: 0
       }
-      await fetchList(param).then(response => {
+      await fetchListByRounds(param).then(response => {
         const roundList = []
         response.items.forEach(x => {
           roundList.push({
-            id: x.item.id,
+            id   : x.item.id,
             round: x.item.round,
             examDate: x.item.examDate.substring(0, 4) + ' / ' + x.item.examDate.substring(4, 6) + ' / ' + x.item.examDate.substring(6, 8),
             examYear: x.item.examYear,
@@ -96,7 +100,8 @@ export default {
     },
 
     examPopupStatus(index, row, val) {
-      // console.log(index, row);
+      this.rID = row.id
+      this.rName = row.name
       if (val == true) {
         this.examPopupStatusVal = val
       } else {

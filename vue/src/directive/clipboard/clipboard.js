@@ -17,11 +17,11 @@ export default {
       })
       clipboard.on('success', e => {
         const callback = el._v_clipboard_success
-        callback && callback(e) // eslint-disable-line
+        callback && callback(e)  
       })
       clipboard.on('error', e => {
         const callback = el._v_clipboard_error
-        callback && callback(e) // eslint-disable-line
+        callback && callback(e)  
       })
       el._v_clipboard = clipboard
     }
