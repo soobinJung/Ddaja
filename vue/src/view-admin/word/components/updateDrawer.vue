@@ -1,173 +1,186 @@
 <template>
-  <div class="main-container">
+  <div class = "main-container">
     <el-drawer
-      title="I am the title"
-      :visible.sync="popupVal"
-      :with-header="false"
-      style="width:100%"
-      :before-close="handleClose"
+      title         = "I am the title"
+      :visible.sync = "popupVal"
+      :with-header  = "false"
+      :before-close = "handleClose"
+      style         = "width:100%"
     >
-      <div class="div1">
-        <span class="span1">Word Questions </span>
-        <span class="span2" style="cursor: pointer" @click="isTitle = true">{{ param.title }}</span>
+      <div class = "div1">
+        <span class = "span1">Word Questions </span>
+        <span 
+          class  = "span2" 
+          style  = "cursor: pointer" 
+          @click = "isTitle = true">{{ param.title }}</span>
       </div>
 
-      <div v-if="isTitle" style="padding : 0 20px 60px 20px">
-        <el-input v-model="param.title" placeholder="Please input">
-          <template slot="append">
-            <div style="cursor: pointer" @click="titleUpdate()">
-              <i class="el-icon-setting" />
+      <div 
+        v-if  = "isTitle" 
+        style = "padding : 0 20px 60px 20px">
+        <el-input 
+          v-model     = "param.title" 
+          placeholder = "Please input">
+          <template slot = "append">
+            <div  
+              style  = "cursor: pointer" 
+              @click = "titleUpdate()">
+              <i class = "el-icon-setting" />
             </div>
           </template>
         </el-input>
       </div>
 
-      <div style="">
+      <div>
         <el-table
-          :data="tableData"
-          height="500"
-          style="width: 100%"
+          :data  = "tableData"
+          height = "500"
+          style  = "width: 100%"
         >
-          <el-table-column type="expand">
-            <template slot-scope="props">
+          <el-table-column type = "expand">
+            <template slot-scope = "props">
               <p>{{ props.row.content }}</p>
             </template>
           </el-table-column>
           <el-table-column
-            label="id"
-            prop="id"
-            width="100"
+            label = "id"
+            prop  = "id"
+            width = "100"
           />
           <el-table-column
-            label="정답"
-            prop="answer"
+            label = "정답"
+            prop  = "answer"
           />
           <el-table-column
-            label="생성일"
-            prop="createdDate"
-            width="100"
+            label = "생성일"
+            prop  = "createdDate"
+            width = "100"
           />
           <el-table-column
-            label="수정일"
-            prop="modifiedDate"
-            width="100"
+            label = "수정일"
+            prop  = "modifiedDate"
+            width = "100"
           />
           <el-table-column
-            label="수정"
-            prop="id"
-            width="100"
+            label = "수정"
+            prop  = "id"
+            width = "100"
           >
-            <template slot-scope="{row}">
-              <i class="el-icon-s-tools" @click="updateQuestion(row)" />
+            <template slot-scope = "{row}">
+              <i class = "el-icon-s-tools" @click = "updateQuestion(row)" />
             </template>
           </el-table-column>
 
           <el-table-column
-            label="삭제"
-            prop="id"
-            width="100"
-          >
-            <template slot-scope="{row}">
-              <i class="el-icon-delete" @click="deleteQuestion(row)" />
+            label = "삭제"
+            prop  = "id"
+            width = "100"
+          > 
+            <template slot-scope = "{row}">
+              <i class = "el-icon-delete" @click = "deleteQuestion(row)" />
             </template>
           </el-table-column>
-
         </el-table>
-
       </div>
 
-      <div v-if="status==='insert'" style="padding: 5% 8% 5% 8%">
-        <div style="float:left; width:100%">
-          <el-input v-model="param.answer" placeholder="Answer" style="float:left; width:50%" />
+      <div v-if = "status==='insert'" style = "padding: 5% 8% 5% 8%">
+        <div style = "float:left; width:100%">
+          <el-input 
+            v-model     = "param.answer" 
+            placeholder = "Answer" 
+            style       = "float:left; width:50%" />
         </div>
-        <div style="float:left;">
+        <div style = "float:left;">
           <el-input
-            v-model="param.content"
-            type="textarea"
-            :rows="4"
-            placeholder="Content"
-            style="width:1000px; padding:1% 0 0 0"
+            v-model     = "param.content"
+            type        = "textarea"
+            :rows       = "4"
+            placeholder = "Content"
+            style       = "width:1000px; padding:1% 0 0 0"
           />
         </div>
-        <div style="float:right;">
+        <div style = "float:right;">
           <el-button
-            type="primary"
             plain
-            style="height:100px; margin:10px 0 0 0"
-            @click="save"
+            type   = "primary"
+            style  = "height:100px; margin:10px 0 0 0"
+            @click = "save"
           >등 록</el-button>
         </div>
       </div>
 
-      <div v-if="status==='update'" style="padding: 5% 8% 5% 8%">
-        <div style="float:left; width:100%">
-          <el-input v-model="param.answer" placeholder="Answer" style="float:left; width:50%" />
+      <div v-if = "status==='update'" style = "padding: 5% 8% 5% 8%">
+        <div style = "float:left; width:100%">
+          <el-input 
+            v-model     = "param.answer" 
+            placeholder = "Answer" 
+            style       = "float:left; width:50%" />
         </div>
-        <div style="float:left;">
+        <div style = "float:left;">
           <el-input
-            v-model="param.content"
-            type="textarea"
-            :rows="4"
-            placeholder="Content"
-            style="width:1000px; padding:1% 0 0 0"
+            v-model     = "param.content"
+            type        = "textarea"
+            :rows       = "4"
+            placeholder = "Content"
+            style       = "width:1000px; padding:1% 0 0 0"
           />
         </div>
-        <div style="float:right;">
+        <div style = "float:right;">
           <el-button
-            type="primary"
             plain
-            style="height:100px; margin:10px 0 0 0"
-            @click="update"
+            type   = "primary"
+            style  = "height:100px; margin:10px 0 0 0"
+            @click = "update"
           >수 정</el-button>
         </div>
       </div>
-
     </el-drawer>
   </div>
 </template>
-
 <script>
 
 import { wordQuestionList, wordQuestionUpdate, wordQuestionInsert, wordQuestionDelete, wordUpdate } from '@/ddaja-api/admin/word/Word'
 
 export default {
-  name: 'AdminWordQuestionUpdate',
+  name: 'AdminWordQuestion_Update'
 
-  props: {
+  , props: {
     popupVal: {
-      type: Boolean,
-      default: false
-    },
-    wordInfo: {
-      type: Object,
-      default: function() {
+      type: Boolean
+      , default: false
+    }
+    , wordInfo: {
+      type: Object
+      , default: function() {
         return {
-          wID: 0,
-          lID: 0,
-          title: '',
-          wordQuestionsCount: 0
+          wID                  : 0
+          , lID                : 0
+          , title              : ''
+          , wordQuestionsCount : 0
         }
       }
     }
-  },
+  }
 
-  data() {
+  , data() {
     return {
-      param: {
-        wID: 0,
-        lID: 0,
-        answer: '',
-        title: '',
-        content: '',
-        page: 0,
-        size: 100
-      },
-      tableData: [],
-      status: 'insert',
-      isTitle: false
+      param : {
+        wID       : 0
+        , lID     : 0
+        , answer  : ''
+        , title   : ''
+        , content : ''
+        , page    : 0
+        , size    : 100
+      }
+
+      , tableData: []
+      , status: 'insert'
+      , isTitle: false
     }
-  },
-  watch: {
+  }
+
+  , watch: {
     popupVal(val) {
       if (val) {
         this.param.wID = this.wordInfo.wID
@@ -179,8 +192,9 @@ export default {
         }
       }
     }
-  },
-  methods: {
+  }
+
+  , methods: {
     async fetchInfo() {
       await wordQuestionList(this.param).then(response => {
         this.tableData = []
@@ -188,16 +202,16 @@ export default {
           this.tableData.push({ id: x.item.id, answer: x.item.answer, content: x.item.content, createdDate: x.item.createdDate, modifiedDate: x.item.modifiedDate, wID: x.item.wordDTO.id, lID: x.item.lid })
         })
       })
-    },
+    }
 
-    updateQuestion(row) {
-      this.status = 'update'
-      this.param.id = row.id
-      this.param.answer = row.answer
+    , updateQuestion(row) {
+      this.status        = 'update'
+      this.param.id      = row.id
+      this.param.answer  = row.answer
       this.param.content = row.content
-    },
+    }
 
-    async update() {
+    , async update() {
       await wordQuestionUpdate(this.param).then(response => {
         this.$message({
           message: 'Word Question Update Success',
@@ -208,9 +222,9 @@ export default {
         this.param.answer = ''
         this.param.content = ''
       })
-    },
+    }
 
-    async titleUpdate() {
+    , async titleUpdate() {
       var param = {
         id: this.param.wID,
         title: this.param.title,
@@ -222,9 +236,9 @@ export default {
           type: 'success'
         })
       })
-    },
+    }
 
-    async deleteQuestion(row) {
+    , async deleteQuestion(row) {
       this.param.id = row.id
       await wordQuestionDelete(this.param).then(response => {
         this.$message({
@@ -233,9 +247,9 @@ export default {
         })
       })
       await this.fetchInfo()
-    },
+    }
 
-    async save() {
+    , async save() {
       await wordQuestionInsert(this.param).then(response => {
         this.$message({
           message: 'Word Question Save Success',
@@ -245,20 +259,19 @@ export default {
         this.param.answer = ''
         this.param.content = ''
       })
-    },
+    }
 
-    popupClose() {
+    , popupClose() {
       this.tableData = []
       this.$emit('refresh')
       this.$emit('close:updatedrawer', false)
-    },
+    }
 
-    handleClose() {
+    , handleClose() {
       this.popupClose()
     }
   }
 }
-
 </script>
 
 <style lang="scss" scoped>

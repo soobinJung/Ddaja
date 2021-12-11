@@ -1,47 +1,49 @@
 <template>
-  <div class="main-container">
-    <div class="main-title">
-      <font class="font1">모의 고사</font><font font class="font2"> - {{ licenseInfo.licenseName }} {{ licenseInfo.type === 'WRITING' ? "필기" : licenseInfo.type === "PERFORM" ? "실기" : "" }}</font>
+  <div class = "main-container">
+    <div class = "main-title">
+      <font class = "font1">모의 고사</font>
+      <font class = "font2"> - {{ licenseInfo.licenseName }} {{ licenseInfo.type === 'WRITING' ? "필기" : licenseInfo.type === "PERFORM" ? "실기" : "" }}</font>
     </div>
-    <div class="div2">
+    <div class = "div2">
       <el-table
-        :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-        style="width: 100%; height: 100%;"
+        :data = "tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+        style = "width: 100%; height: 100%;"
       >
         <el-table-column
-          label="Name"
-          prop="name"
+          label = "Name"
+          prop  = "name"
         />
         <el-table-column
-          label="examDate"
-          prop="examDate"
+          label = "examDate"
+          prop  = "examDate"
         />
-        <el-table-column align="right">
-          <template slot="header" slot-scope="{}">
+        <el-table-column align = "right">
+          <template slot = "header" slot-scope = "{}">
             <el-input
-              v-model="search"
-              size="mini"
-              placeholder="Type to search"
+              v-model     = "search"
+              size        = "mini"
+              placeholder = "Type to search"
             />
           </template>
-          <template slot-scope="scope">
+          <template slot-scope = "scope">
             <el-button
-              size="mini"
-              @click="examPopupStatus(scope.$index, scope.row, true)"
+              size   = "mini"
+              @click = "examPopupStatus(scope.row, true)"
             >응시 하기</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <examinationPopup
-      :popup-val = "examPopupStatusVal"
-      :rID       = "rID"
-      :rName     = "rName"
-      @close:examination="examPopupStatus"
+      :popup-val         = "examPopupStatusVal"
+      :roundID           = "roundID"
+      :roundName         = "roundName"
+      @close:examination = "examPopupStatus"
     />
     <gradingPopup
-      :popup-val="gradingPopupStatusVal"
-      @close:examination="gradingPopupStatus"
+      :popup-val            = "gradingPopupStatusVal"
+      :user-question-result = "userQuestionResult"
+      @close:examination    = "gradingPopupStatus"
     />
   </div>
 </template>
@@ -53,63 +55,67 @@ import examinationPopup from '@/views/explore/examination/component/examinationP
 import gradingPopup from '@/views/explore/examination/component/gradingPopup'
 
 export default {
-  name: '',
-  components: {
-    examinationPopup,
-    gradingPopup
-  },
-  data() {
-    return {
-      rID : 0 
-      , rName : ''
-      , tableData: []
-      , search: ''
-      , radio1: '1'
-      , examPopupStatusVal: false
-      , gradingPopupStatusVal: false
-    }
-  },
+  name: 'Examination'
+  , components: {
+    examinationPopup
+    , gradingPopup
+  }
 
-  created() {
+  , data() {
+    return {
+      roundID                 : 0 
+      , roundName             : ''
+      , tableData             : []
+      , userQuestionResult    : []
+      , search                : ''
+      , examPopupStatusVal    : false
+      , gradingPopupStatusVal : false
+    }
+  }
+
+  , created() {
     this.licenseInfo = this.$session.get('licenseInfo')
     this.subject = this.licenseInfo.subject
-
     this.setRoundList()
-  },
+  }
 
-  methods: {
-
+  , methods: {
     async setRoundList() {
       var param = {
-        licenseID: this.licenseInfo.licenseID,
-        examYear: 0
+        licenseID  : this.licenseInfo.licenseID
+        , examYear : 0
       }
       await fetchListByRounds(param).then(response => {
         const roundList = []
         response.items.forEach(x => {
           roundList.push({
-            id   : x.item.id,
-            round: x.item.round,
-            examDate: x.item.examDate.substring(0, 4) + ' / ' + x.item.examDate.substring(4, 6) + ' / ' + x.item.examDate.substring(6, 8),
-            examYear: x.item.examYear,
-            name: x.item.examYear + ' 년도 ' + x.item.round + ' 회차 시험문제 '
+            id         : x.item.id
+            , round    : x.item.round
+            , examDate : x.item.examDate.substring(0, 4) + ' / ' + x.item.examDate.substring(4, 6) + ' / ' + x.item.examDate.substring(6, 8)
+            , examYear : x.item.examYear
+            , name     : x.item.examYear + ' 년도 ' + x.item.round + ' 회차 시험문제 '
           })
         })
         this.tableData = roundList
       })
-    },
+    }
 
-    examPopupStatus(index, row, val) {
-      this.rID = row.id
-      this.rName = row.name
-      if (val == true) {
+    , examPopupStatus(data, val) {
+      
+      if (val === true) {
+        // data = 시험 문제 정보
+        this.roundID            = data.id
+        this.roundName          = data.name
         this.examPopupStatusVal = val
       } else {
+        // data = 사용자 답안
+        this.userQuestionResult = data
         this.examPopupStatusVal = val
         this.gradingPopupStatus(true)
       }
-    },
-    gradingPopupStatus(val) {
+    }
+
+    , gradingPopupStatus(val) {
       this.gradingPopupStatusVal = val
     }
   }

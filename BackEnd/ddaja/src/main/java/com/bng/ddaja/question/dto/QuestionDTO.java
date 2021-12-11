@@ -71,6 +71,12 @@ public class QuestionDTO extends CommonDTO {
     private String content;
 
     @ApiModelProperty(
+        name = "answer"
+        , example = "1"
+    )
+    private int answer;
+
+    @ApiModelProperty(
         name = "answerOne"
         , example = ""
     )
@@ -114,6 +120,7 @@ public class QuestionDTO extends CommonDTO {
         this.no             = vo.getNo();
         this.title          = vo.getTitle();
         this.content        = vo.getContent();
+        this.answer         = vo.getAnswer();
         this.answerOne      = vo.getAnswerOne();
         this.answerTwo      = vo.getAnswerTwo();
         this.answerThr      = vo.getAnswerThr();
@@ -135,6 +142,7 @@ public class QuestionDTO extends CommonDTO {
                         .inUse(inUse)
                         .title(title)
                         .content(content)
+                        .answer(answer)
                         .answerOne(answerOne)
                         .answerTwo(answerTwo)
                         .answerThr(answerThr)

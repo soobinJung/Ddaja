@@ -44,6 +44,9 @@ public class Question extends CommonEntity {
     @Column(name="NO")
     private int no;
 
+    @Column(name="ANSWER")
+    private int answer;
+
     @Column(name="ANSWER_ONE")
     private String answerOne;
 

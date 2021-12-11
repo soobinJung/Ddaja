@@ -1,5 +1,7 @@
 package com.bng.ddaja.question.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import com.bng.ddaja.common.dto.CommonResponse;
@@ -12,10 +14,12 @@ import com.bng.ddaja.question.dto.QuestionDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import lombok.AllArgsConstructor;
 
 @RequestMapping("/question")
@@ -31,6 +35,15 @@ public class QuestionController {
             new CommonResponse(
                 questionService.getAllQuestionByQuestionSearch(questionSearch)
                 , QuestionHateoas.values()
+            )
+        );
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CommonResponse> getQuestionById( @PathVariable(name = "id", required = true) long id ){
+        return ResponseEntity.ok().body(
+            new CommonResponse(
+                questionService.findByID(id)
             )
         );
     }

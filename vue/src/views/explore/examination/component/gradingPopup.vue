@@ -59,15 +59,33 @@ export default {
             , quizType : 1
         }
     }
+
     , components : {
         testJson
         , community
     }
+
     , props: {
-        popupVal: {} 
+        popupVal : {
+            type : Boolean
+            , defalut: false
+        } 
+        , userQuestionResult    : {
+            type : Array
+            , defalut : function (){
+                return [1, 2, 3, 4, 3, 2]
+            }
+        }
     }
-    , watch: { }
-    ,methods: { 
+
+    , watch: { 
+        userQuestionResult(val){
+            console.log('사용자가 맞춘 답 여기 있쒈')
+            console.log(val)
+        }
+    }
+
+    , methods: { 
         popupClose(val) { 
             // 채점 popup 닫는다.
             this.$emit('close:examination', val) 

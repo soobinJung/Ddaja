@@ -5,21 +5,14 @@
     </div>
 
     <div class="block1">
-      <div class="block4"> <i class="el-icon-edit" /> <span class="demonstration">기출 문제 - 모든 문제</span></div>
-      <el-carousel height="200px">
-        <el-carousel-item v-for="item in exploreAllOptions" :key="item.id">
-          <router-link to="/explore/examination">
-            <div style="text-align: center; ">
-              <div style="padding : 60px 0 0 0 "><span class="span1">{{ item.title }}</span></div>
-              <div style="padding : 20px 0 0 0 "><span class="span2">{{ item.count }}</span></div>
-            </div>
-          </router-link>
-        </el-carousel-item>
-      </el-carousel>
+      <div class="block4"> 
+        <router-link to="/explore/examination">
+          <el-button style = "height: 150px;" type="primary" plain>기출 문제 - 모든 문제</el-button>
+        </router-link>          
+      </div> 
 
-      <div class="block3">
-        <div class="block4"> <i class="el-icon-info" /> <span class="span4"> {{ licenseInfo.licenseName }} 자격증의 정보입니다. 오류가 존재할 수 있습니다.</span></div>
-        <el-carousel height="240px">
+      <div class="block3"> 
+        <el-carousel height="300px">
           <div style="text-align: left;">
             <div style="padding : 0 3% 3% 3%">
               <span class="span3">
@@ -56,31 +49,19 @@
     </div>
 
     <div class="block1">
-      <div class="block4"> <i class="el-icon-edit" /> <span class="demonstration">기출 문제 - 한 문제</span></div>
-      <el-carousel height="200px">
-        <el-carousel-item v-for="item in exploreOneOptions" :key="item.id">
-          <router-link to="/explore/examination-one">
-            <div style="text-align: center; ">
-              <div style="padding : 60px 0 0 0 "><span class="span1">{{ item.title }}</span></div>
-              <div style="padding : 20px 0 0 0 "><span class="span2">{{ item.count }}</span></div>
-            </div>
-          </router-link>
-        </el-carousel-item>
-      </el-carousel>
+      <div class="block4"> 
+        <router-link to="/explore/examination-one">
+          <el-button style = "height: 150px;" type="success" plain>기출 문제 - 한문제씩</el-button>
+        </router-link>
+      </div> 
     </div>
 
     <div class="block1">
-      <div class="block4"> <i class="el-icon-edit" /> <span class="demonstration">단어 암기</span></div>
-      <el-carousel height="200px">
-        <el-carousel-item v-for="item in exploreWordOptions" :key="item.id">
-          <router-link to="/explore/examination-one">
-            <div style="text-align: center; ">
-              <div style="padding : 60px 0 0 0 "><span class="span1">{{ item.title }}</span></div>
-              <div style="padding : 20px 0 0 0 "><span class="span2">{{ item.count }}</span></div>
-            </div>
-          </router-link>
-        </el-carousel-item>
-      </el-carousel>
+      <div class="block4"> 
+        <router-link to="/explore/examination-word">
+          <el-button style = "height: 150px;" type="warning" plain>기출 용어 - 암기단어</el-button>
+        </router-link>     
+      </div> 
     </div>
 
     <div class="block2">
@@ -91,7 +72,7 @@
         </router-link>
       </div>
       <el-carousel height="530px">
-        <el-carousel-item v-for="item in successComments" :key="item.id" style="background-color:#f2f5f7; border:1px solid #e0e0e0; border-radius:30px">
+        <el-carousel-item v-for="item in successComments" :key="item.id" style="background-color:#ffff; border:2px solid #e0e0e0; border-radius:50px">
           <router-link to="/explore/acceptance-review">
             <div style="padding: 5% 5% 2% 5%;">
               <span style="font-size:20px; font-weight: bold;">

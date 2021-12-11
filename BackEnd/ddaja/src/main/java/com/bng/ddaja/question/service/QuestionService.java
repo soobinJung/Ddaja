@@ -30,6 +30,9 @@ public class QuestionService {
         ).map(vo -> new QuestionDTO(vo));
     }
 
+    public QuestionDTO findByID (long id){
+        return new QuestionDTO (questionRepository.findById(id));
+    }
 
     public QuestionDTO saveQuestion( QuestionDTO questionDTO ){
         

@@ -14,6 +14,9 @@
             type="primary"
             @click="onSubmit"
           >Create</el-button>
+          <el-button
+            @click="downloadByQuestionExcelSample"
+          >Excel Sample</el-button>
         </div>
       </div>
 
@@ -40,27 +43,27 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="기출문제 응시년도">
+          <el-form-item label = "기출문제 응시년도">
             <el-input
-              ref="examYear"
-              v-model="param.examYear"
-              style="width:750px"
+              ref     = "examYear"
+              v-model = "param.examYear"
+              style   = "width:750px"
             />
           </el-form-item>
 
-          <el-form-item label="기출문제 응시일">
+          <el-form-item label = "기출문제 응시일">
             <el-input
-              ref="examDate"
-              v-model="param.examDate"
-              style="width:750px"
+              ref     = "examDate"
+              v-model = "param.examDate"
+              style   = "width:750px"
             />
           </el-form-item>
 
-          <el-form-item label="기출문제 응시회차">
+          <el-form-item label = "기출문제 응시회차">
             <el-input
-              ref="round"
-              v-model="param.round"
-              style="width:750px"
+              ref     = "round"
+              v-model = "param.round"
+              style   = "width:750px"
             />
           </el-form-item>
         </el-form>
@@ -68,24 +71,24 @@
 
       <div>
         <ExcelUpload
-          :on-success="handleSuccess"
-          :before-upload="beforeUpload"
+          :on-success    = "handleSuccess"
+          :before-upload = "beforeUpload"
         />
         <el-scrollbar
-          ref="scrollbar"
-          style="height: calc(100vh - 45px)"
+          ref   = "scrollbar"
+          style = "height: calc(100vh - 45px)"
         >
           <el-table
-            :data="tableData"
             border
             highlight-current-row
-            style="width: 100%; margin-top:20px; height: 500px; overflow:scroll"
+            :data = "tableData"
+            style = "width: 100%; margin-top:20px; height: 500px; overflow:scroll"
           >
             <el-table-column
-              v-for="item of tableHeader"
-              :key="item"
-              :prop="item"
-              :label="item"
+              v-for  = "item of tableHeader"
+              :key   = "item"
+              :prop  = "item"
+              :label = "item"
             />
           </el-table>
         </el-scrollbar>
@@ -98,57 +101,60 @@
 import ExcelUpload from '../components/excelUpload'
 import { licenseList, insertRound, insertQuestion } from '@/ddaja-api/admin/examination/Examination'
 
-import { wordInsert } from '@/ddaja-api/admin/word/Word'
-
 export default {
-  name: 'AdminQuestionInsert',
-  components: {
+  name: 'AdminQuestion_Insert'
+
+  , components: {
     ExcelUpload
-  }, props: {
+  }
+  
+  , props: {
     popupVal: {
-      type: Boolean,
-      defalut: false
+      type      : Boolean
+      , defalut : false
     }
   },
   data() {
     return {
       param: {
-        lID: 0,
-        examYear: 2021,
-        examDate: 20210101,
-        round: 1,
-        inUse: true
+        lID: 0
+        , examYear: 2021
+        , examDate: 20210101
+        , round: 1
+        , inUse: true
 
-      },
+      }
 
-      licenseOptions: [],
-      tableHeader: [],
-      tableData: [],
-      loading: false
+      , licenseOptions : []
+      , tableHeader    : []
+      , tableData      : []
+      , loading        : false
     }
-  },
-  created() {
+  }
+
+  , created() {
     this.getLicense()
-  },
-  methods: {
+  }
+
+  , methods: {
     async onSubmit() {
       let param = {
-        lID: this.param.lID,
-        examYear: this.param.examYear,
-        examDate: this.param.examDate,
-        round: this.param.round,
-        inUse: this.param.inUse,
-        rID : 0, 
-        sID : 0, 
-        no         : 0,
-        title      : '',
-        content    : '',
-        answerOne  : '',
-        answerTwo  : '',
-        answerThr  : '',
-        answerFour : '',
-        answerFive : '',
-        score      : '',
+        lID          : this.param.lID
+        , examYear   : this.param.examYear
+        , examDate   : this.param.examDate
+        , round      : this.param.round
+        , inUse      : this.param.inUse
+        , rID        : 0
+        , sID        : 0
+        , no         : 0
+        , title      : ''
+        , content    : ''
+        , answerOne  : ''
+        , answerTwo  : ''
+        , answerThr  : ''
+        , answerFour : ''
+        , answerFive : ''
+        , score      : ''
       }
       await insertRound(param).then(response => {
         param.rID = response.item.id
@@ -160,35 +166,55 @@ export default {
       for (var i in this.tableData) {
         var x = this.tableData[i]
 
-        param.no = x.no
-        param.sID = x.sid
-        param.title = x.title
-        param.content = x.content
-        param.answerOne = x.answerOne
-        param.answerTwo = x.answerTwo
-        param.answerThr = x.answerThr
-        param.answerFour = x.answerFour
-        param.answerFive = x.answerFive
-        param.score = x.score
-
+        param.no         = x.no         || 1
+        param.sID        = x.sid        || 1
+        param.title      = x.title      || ''
+        param.content    = x.content    || ''
+        param.answerOne  = x.answerOne  || ''
+        param.answerTwo  = x.answerTwo  || ''
+        param.answerThr  = x.answerThr  || ''
+        param.answerFour = x.answerFour || ''
+        param.answerFive = x.answerFive || ''
+        param.score      = x.score      || 0
         await this.insertQuestion(param).then()
       }
       this.loading = false
       this.popupClose()
-      this.$alert('SAVE SUCESS')
+      this.$alert('저장 성공')
     }
 
     , async insertQuestion(param){
       await insertQuestion(param).then()
     }
 
-    , async wordInsert() {
-      await wordInsert(this.param).then(response => {
-        this.param.wID = response.item.id
-      })
-    },
+    , async downloadByQuestionExcelSample (){
 
-    async getLicense() {
+    import('@/vendor/Export2Excel').then(excel => {
+        const tHeader   = ['no', 'title', 'content', 'answerOne', 'answerTwo', 'answerThr', 'answerFour', 'answerFive', 'score', 'sid']
+        const filterVal = ['no', 'title', 'content', 'answerOne', 'answerTwo', 'answerThr', 'answerFour', 'answerFive', 'score', 'sid']
+        const list      = []
+        const data      = this.formatJson(filterVal, list)
+        excel.export_json_to_excel({
+          header      : tHeader
+          , filename  : 'Ddaja Question Sample'
+          , autoWidth : true
+          , bookType  : 'xlsx'
+          , data
+        })
+      })
+    }
+    
+    , formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        if (j === 'timestamp') {
+          return parseTime(v[j])
+        } else {
+          return v[j]
+        }
+      }))
+    }
+
+    , async getLicense() {
       await licenseList().then(response => {
         response.items.forEach(x => {
           var type = (x.item.type === 'WRITING') ? '필기' : '실기'
@@ -197,8 +223,9 @@ export default {
         })
         this.param.lID = this.licenseOptions[0].value
       })
-    },
-    verification() {
+    }
+    
+    , verification() {
       if (this.param.lID === 0) {
         this.$alert('LICENSE NULL ERROR')
         this.$refs.license.focus()
@@ -210,23 +237,26 @@ export default {
         return false
       }
       return true
-    },
-    beforeUpload(file) {
+    }
+
+    , beforeUpload(file) {
       const isLt1M = file.size / 1024 / 1024 < 1
       if (isLt1M) { return true }
       this.$message({
-        message: 'Please do not upload files larger than 1m in size.',
-        type: 'warning'
+        message : '용량 초과.'
+        , type  : 'warning'
       })
       return false
-    },
-    handleSuccess({ results, header }) {
+    }
+
+    , handleSuccess({ results, header }) {
       this.tableData = results
       this.tableHeader = header
-    },
-    popupClose() {
+    }
+
+    , popupClose() {
       if (this.loading) {
-        this.$alert('Ddaja is putting in the data.')
+        this.$alert('데이터 넣는 중 입니다.')
         return
       }
       this.$emit('refresh')
