@@ -2,85 +2,183 @@
     <div class="main-container">
         <el-drawer title="I am the title"
                 :visible.sync="popupVal"
-                :with-header="false"
+                :with-header="false" 
                 :before-close="handleClose">
             <div class="div1">
                 <span class="span1">토론</span>
             </div>
-            <div class="div2">
-                <div class="div2-1"><span>1. SQL 쿼리에서 DATA 를 가지고 올 때 사용하는 명령문은 ?</span></div>
-                <div class="div2-2"><span>1. SELECT</span></div>
-                <div class="div2-2"><span>2. SELECT</span></div>
-                <div class="div2-2"><span>3. SELECT</span></div>
-                <div class="div2-2"><span>4. SELECT</span></div>
-            </div>
-            <div class="div3">
-                <span class="span1"> 의견을 함께해주세요 <i class="el-icon-edit"></i> </span> 
-            </div> 
-            <div class="div4">
-                <el-input
-                type="textarea"
-                clear="textarea1"
-                :autosize="{ minRows: 3, maxRows: 3}"
-                placeholder="Please input"
-                v-model="reply">
-                </el-input>
-                <el-button class="btn">저장</el-button>
-            </div>
-            <div class="div5">
-                <!-- forEach 돌리세요.-->
-                <div v-for="item in items" :key="item.key" class="div5-1"> 
-                    <div class="div5-1-1">
-                        <div class="div5-1-1-1">
-                            <i class="el-icon-s-custom"></i>
+            <div style = "float:left; width: 100%;">
+                <div style = "float:left; width: 40%; height: 100%;">
+                    <div class = "div2">
+                        <div class = "div2-1"><span> {{question.no}} .  {{question.title}} ( {{question.score}} 점 )  </span></div>
+                        <div 
+                            v-if = "question.answerOne != '' " 
+                            class = "div2-2">
+                            <span>1 . {{question.answerOne}} </span>
                         </div>
-                        <div class="div5-1-1-2">
-                            <span class="span1"> {{item.name}} ( {{item.date}} )</span>
+                        <div 
+                            v-if = "question.answerTwo != '' " 
+                            class = "div2-2">
+                            <span>2 .  {{question.answerTwo}} </span>
                         </div>
-                        <div class="div5-1-1-3">
-                            <span style="float:left; padding-left:10px;"   class="pointer"> 👍 200 </span>
-                            <span style="float:right; padding-right:10px;" class="pointer">👎 100 </span>
-                        </div> 
+                        <div 
+                            v-if = "question.answerThr != '' " 
+                            class = "div2-2">
+                            <span>3 .  {{question.answerThr}} </span>
+                        </div>
+                        <div 
+                            v-if = "question.answerFour != '' " 
+                            class = "div2-2">
+                            <span>4 .  {{question.answerFour}} </span>
+                        </div>
+                        <div 
+                            v-if = "question.answerFive != '' " 
+                            class = "div2-2">
+                            <span>5 .  {{question.answerFive}} </span>
+                        </div>                                                                
                     </div>
-                    <div class="div5-1-2"> 
-                        <div class="div5-1-2-1">
-                            <span class="span1">저는 아니라고 생긱 합니다. 왜냐하면 ~~~~~~저는 아니라고 생긱 합니다. 왜냐하면 ~~~~~~~~ 이기 때문이죠. 안그렇습니까 ? 제 생각에는 그렇다고 셍각합니다. SELECT 나 DELETE 나 UPDATE 나 내가 오또케 알아요</span>
+                </div>
+                <div style = "float:left; width: 60%; height: 100%;">
+                    <div style = "overflow:scroll; height: 750px; overflow-x: hidden">
+                        <div v-for="item in items" :key="item.key" style = "padding: 2%;"> 
+                            <div style = "">
+                                <div style = "text-align:left; padding: 0 1% 1% 0;">
+                                    <span style="span1"> {{item.name}} ( {{item.date}} )</span>
+                                </div>
+                                <div style = "width: 100%; float:left; padding: 1% 1% 1% 0;">
+                                    <span style="float:left; padding-left:10px;" class="pointer"> 👍 200 </span>
+                                    <span style="float:left; padding-left:10px;" class="pointer"> 👎 100 </span>
+                                </div> 
+                                <div>
+                                    <span style="">
+                                    저는 아니라고 생긱 합니다. 왜냐하면 ~~~~~~저는 아니라고 생긱 합니다. 왜냐하면 ~~~~~~~~ 이기 때문이죠. 안그렇습니까 ? 제 생각에는 그렇다고 셍각합니다. SELECT 나 DELETE 나 UPDATE 나 내가 오또케 알아요
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="div5-1-2-2 pointer">
-                            <i class="el-icon-delete"></i>
+                    </div>
+                    <div style="width: 100%; margin : 2%">
+                        <div style="width:78%; float: left">
+                            <el-input placeholder = "생각을 공유해보세요" v-model = "replyInput"></el-input>
+                        </div>
+                        <div style="width: 20%; float: left">
+                            <el-button> 의견 저장 </el-button>
                         </div>
                     </div>
                 </div>
-            <!-- forEach 돌리세요.--> 
-            </div>
+            </div> 
         </el-drawer>
     </div>
 </template>
 
 <script>
+import { getQuestion } from '@/ddaja-api/user/explore/communication/Communication.js'
 
 export default {
     name: 'community'
+
     , data() {
         return { 
             reply : ""
+            , question : {
+                    id            : 0
+                    , no          : 2
+                    , score       : 3
+                    , answer      : 2
+                    , title       : "UML 모델에서 한 사물의 명세가 ㄴㄴㄴㄴ?"
+                    , content     : ""
+                    , answerOne   : "Association"
+                    , answerTwo   : "Dependency"
+                    , answerThr   : "Realization"
+                    , answerFour  : "Generalization"
+                    , answerFive  : ""
+                    , created     : false
+                    , createdDate : 1639175966000
+                    , inUse       : true
+                    , isCreated   : false
+                    , lid         : 1
+                    , sid         : 1
+                    , rid         : 26
+                }
             ,  items: [ 
                 {  name: 'Binsoo' , date: '20200102' }
                 , { name: 'Yubin' , date: '20200213' }
-                , { name: 'Enji' , date: '20200521'  }
+                , { name: 'Enji'  , date: '20200521'  }
+                , { name: 'Enji'  , date: '20200521'  }
+                , { name: 'Enji'  , date: '20200521'  }
+                , { name: 'Enji'  , date: '20200521'  }
+                , { name: 'Enji'  , date: '20200521'  }
+                , { name: 'Enji'  , date: '20200521'  }
+                , { name: 'Enji'  , date: '20200521'  }
+                , { name: 'Enji'  , date: '20200521'  }
+                , { name: 'Enji'  , date: '20200521'  }
+                , { name: 'Enji'  , date: '20200521'  }
                 , { name: 'Boeun' , date: '20200631' }
             ]
+            , replyInput : ''
         }
     }
     , props: {
-        popupVal: false
+        popupVal : {
+            type : Boolean
+            , defalut: false
+        }
+        , questionData    : {
+            type : Object
+            , defalut : function (){
+                return {
+                    id            : 0
+                    , no          : 2
+                    , score       : 3
+                    , answer      : 2
+                    , title       : "UML 모델에서 한 사물의 명세가 ?"
+                    , content     : ""
+                    , answerOne   : "Association"
+                    , answerTwo   : "Dependency"
+                    , answerThr   : "Realization"
+                    , answerFour  : "Generalization"
+                    , answerFive  : ""
+                    , created     : false
+                    , createdDate : 1639175966000
+                    , inUse       : true
+                    , isCreated   : false
+                    , lid         : 1
+                    , sid         : 1
+                    , rid         : 26
+                }
+            }
+        }
     }
+
     , methods: {
-        popupClose() {  
+        async fetchList (){
+            await this.setQuestion()
+            await this.setReply()
+        }
+
+        , async setQuestion(){
+            await getQuestion({id : this.questionData.id}).then( response => {
+                this.question = response.item
+            })
+        }
+        
+        , setReply(){
+
+        }
+
+        , popupClose() {  
             this.$emit('close:community', false) 
         }
         , handleClose(){
             this.popupClose()
+        }
+    }
+
+    , watch : {
+        popupVal ( val ){
+            if(val){
+                this.fetchList();
+            }
         }
     }
 }
@@ -88,25 +186,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-@import url('https://fonts.googleapis.com/css2?family=Kirang+Haerang&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Jua&display=swap');
 
 .main-container{
     width: 100%; 
     .div1{
         float: left;
-        margin: 3% 3% 0px 3%;
-        border: 3px solid rgb(175, 175, 175);
-        border-radius: 40px 80px / 80px 40px;
-        background-color: rgb(236, 231, 231);
+        margin: 3% 0 0px 0%;
         width: 93%;
         height: 70px; 
-        padding-top: 8px;
+        padding: 8px 0 0 5%;
+        text-align: left;
         .span1{
-            font-size: 30px; 
             padding: 15px; 
+            font-family: 'Do Hyeon', sans-serif;
             font-size: 50px;
-            font-family: "Kirang Haerang", cursive;
         }
     }
     .div2{  
@@ -114,12 +208,13 @@ export default {
         padding: 2%;
         height: inherit; 
         float: left;
-        margin: 3% 3% 3% 3%;
+        margin: 1% 3% 1% 3%;
         .div2-1{ 
             float: left;
             width: inherit;
-            padding: 2%;
-            font-size: 15px;
+            padding: 7% 1% 7% 1%;
+            font-size: 20px;
+            text-align: left;
             font-weight: bold;
             span{
                 float: left;
@@ -128,11 +223,13 @@ export default {
         .div2-2{ 
             float: left;
             width: inherit;
-            padding: 2%;
+            padding: 1.3%;
             font-size: 13px;
             font-weight: bold;
+            text-align: left;
             span{
-                padding-left: 5%;
+                padding: 2.5% 0 0 1%;
+                font-size: 16px;
                 float: left;
             } 
         }
@@ -143,6 +240,7 @@ export default {
         height: inherit; 
         float: left;
         margin: 3% 3% 0% 3%; 
+            text-align: left;
         border: 1px solid rgb(226, 226, 226); 
         .span1{
             font-weight: bold;
@@ -178,7 +276,7 @@ export default {
             margin : 0 0 3px 0;
             border: 1px solid rgb(226, 226, 226);
             overflow:hidden;
-            height:auto;
+            height :auto;
             float: left;
             .div5-1-1{ 
                 width: 28%;
@@ -223,4 +321,8 @@ export default {
         cursor:pointer;
     }
 }  
+
+::v-deep .el-drawer{
+    width: 85% !important;
+}
 </style>

@@ -8,8 +8,10 @@
         title         = "">
         <div class = "div1">
             <div class = "div1-1">
-                <span class = "span1">{{roundName}}</span>
-                <div style="float: right; padding : 0 230px 0 0">
+                <span class = "span1">{{roundName}} </span>
+                <span class = "span2"> 정답 수  현황 : {{userNumber}} / {{totalNumber}} 개</span>
+                <span class = "span2"> 점수 현황 : {{userScore}} / {{totalScore}} 점</span>
+                <div style="float: right; padding : 40px 100px 0 0"> 
                     <el-radio-group v-model = "checkMode">
                         <el-radio-button label="1">모든 문제 확인</el-radio-button>
                         <el-radio-button label="2">틀린 문제만 확인</el-radio-button>
@@ -17,9 +19,6 @@
                     </el-radio-group>
                 </div>
             </div> 
-            <!-- <div style="float:left; padding: 50px 0 50px 70px">
-                
-            </div> -->
         </div> 
         <div 
             class = "div2" 
@@ -27,10 +26,7 @@
             :key  = "quiz.id" >
             <div class = "div2-1">
                 <div class = "div2-1-1">
-                    <span class = "span1"> {{quiz.no}}. {{quiz.title}}  </span>  
-                </div> 
-                <div class = "div2-1-1">
-                    <el-button style="float:left" class="btn1" @click="communityPopupStatus(true)">토 론</el-button>
+                    <el-button style="float:left" @click="communityPopupStatus(true, quiz)">{{quiz.no}}. {{quiz.title}} ( {{quiz.score}} 점 ) </el-button>
                 </div> 
                 <div class = "div2-1-2" v-if="quiz.content != ''">
                     <span class = "span1"> {{quiz.content}}  </span>  
@@ -79,26 +75,34 @@
         </span>
         </el-dialog> 
         <community
-        :popup-val="communityPopupVal"
-        @close:community="communityPopupStatus"
+        :popup-val       = "communityPopupVal"
+        :question-data   = "questionData"
+        @close:community = "communityPopupStatus"
         />
     </div> 
 </template>
 
 <script>
+import community from '@/views/explore/communication'
 import { fetchListByQuestions } from '@/ddaja-api/user/explore/examination/Examination.js'
 import _ from 'lodash'
 
-import community from '@/views/explore/communication'
 export default {
     name: 'gradingPopup'
+
     , data() {
         return { 
-            communityPopupVal : false
-            , quizType : 1
-            , checkMode : 1
-            , questionList : []
+            communityPopupVal  : false
+            , questionData     : {}
+            , questionList     : []
             , questionListOrg  : []
+            , checkMode        : 1
+            , quizType         : 1
+            , questionNumber   : 0
+            , totalNumber      : 0
+            , userNumber       : 0
+            , userScore        : 0
+            , totalScore       : 0
         }
     }
 
@@ -146,13 +150,21 @@ export default {
     , methods: { 
         
         async fetchList (){
+            
             if(this.roundID === 0){ return }
+
+            this.totalScore = 0
+            this.totalNumber = 0
+            this.userScore = 0
+            this.userNumber = 0
+            this.questionListOrg = []
+            this.questionList = []
+
             let param = {
                 licenseID   : 0
                 , roundID   : this.roundID || 0
                 , SubjectID :  0
             }
-            this.questionList = []
             await fetchListByQuestions(param).then( response => {
                 let userQuestionResult = this.userQuestionResult
 
@@ -185,6 +197,17 @@ export default {
                     })
                 })
                 this.questionListOrg = this.questionList
+
+                let questionListOrg = _.cloneDeep(this.questionListOrg);
+
+                questionListOrg.forEach( x => {
+                    this.totalScore  += x.score 
+                    this.totalNumber += 1 
+                    if(x.userAnswer[x.answer-1]){
+                        this.userScore  += x.score 
+                        this.userNumber += 1 
+                    }
+                })
             })
         }
 
@@ -201,7 +224,6 @@ export default {
 
             // 틀린 것만
             if(mode === 2){
-                console.log(' 틀린 ')
                 this.questionList =  _.filter(questionListOrg, function(x) { 
                     return !x.userAnswer[x.answer-1] ; 
                 });
@@ -209,7 +231,6 @@ export default {
 
             // 맞은 것만
             if(mode === 3){
-                console.log(' 맞은 ')
                 this.questionList =  _.filter(questionListOrg, function(x) { 
                     return x.userAnswer[x.answer-1] ; 
                 });
@@ -217,21 +238,22 @@ export default {
         }
 
         , popupClose(val) { 
-            // 채점 popup 닫는다.
             this.$emit('close:examination', val) 
         }
+
         , handleClose(done) {
-            // 클릭 이벤트가 popup 벗어나면 확인창.
         this.$confirm('끝내시겠습니까 ?')
             .then(_ => {  
                 this.popupClose(false);
             })
             .catch(_ => {});
         } 
-        , communityPopupStatus(val){
+        
+        , communityPopupStatus(val, data){
             if(val){
                 // 토론창 열기 
                 this.communityPopupVal = val
+                this.questionData      = data
             }else{
                 // 토론창 닫기
                 this.communityPopupVal = val
@@ -255,6 +277,13 @@ export default {
             font-family: 'Do Hyeon', sans-serif;
             color: black;
             padding: 0 0 0 5%;
+        }
+        .span2{
+            float: left;
+            font-size: 20px;
+            font-family: 'Do Hyeon', sans-serif;
+            color: black;
+            padding: 1% 0 0 5%;
         }
     }
 }

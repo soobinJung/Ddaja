@@ -14,13 +14,13 @@ export function fetchListByRounds(param) {
 
 export function fetchListByQuestions(param) {
   return request({
-    url: '/question',
-    method: 'get',
-    params: {
-      licenseID : param.licenseID || 0,
-      roundID   : param.roundID   || 0,
-      SubjectID : param.SubjectID || 0,
-      inUse: true
+    url: '/question'
+    , method: 'get'
+    , params: {
+      licenseID   : param.licenseID || 0
+      , roundID   : param.roundID   || 0
+      , SubjectID : param.SubjectID || 0
+      , inUse     : true
     }
   })
 }
