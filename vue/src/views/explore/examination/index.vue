@@ -42,6 +42,8 @@
     />
     <gradingPopup
       :popup-val            = "gradingPopupStatusVal"
+      :roundID           = "roundID"
+      :roundName         = "roundName"
       :user-question-result = "userQuestionResult"
       @close:examination    = "gradingPopupStatus"
     />

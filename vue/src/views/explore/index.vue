@@ -1,100 +1,96 @@
 <template>
-  <div class="cotegory-container">
-    <div class="title-style">
-      <font class="title-font">{{ licenseInfo.name }} - {{ licenseInfo.type === 'WRITING' ? "필기" : licenseInfo.type === "PERFORM" ? "실기" : "" }}</font>
+  <div class = "cotegory-container">
+    <div class = "title-style">
+      <font class = "title-font">{{ licenseInfo.name }} - {{ licenseInfo.type === 'WRITING' ? "필기" : licenseInfo.type === "PERFORM" ? "실기" : "" }}</font>
     </div>
-
-    <div class="block1">
-      <div class="block4"> 
-        <router-link to="/explore/examination">
+    <div class = "block1">
+      <div class = "block4"> 
+        <router-link to = "/explore/examination">
           <el-button style = "height: 150px;" type="primary" plain>기출 문제 - 모든 문제</el-button>
         </router-link>          
       </div> 
-
-      <div class="block3"> 
-        <el-carousel height="300px">
-          <div style="text-align: left;">
-            <div style="padding : 0 3% 3% 3%">
-              <span class="span3">
-                {{ licenseInfo.name }} 자격증은 <el-button size="small">{{ licenseInfo.agency }}</el-button> 에서 주최하며,
-
-                <span v-if="licenseIfs.length > 0">
+      <div class = "block3"> 
+          <div style = "text-align: left;">
+            <div style = "padding : 0 3% 3% 3%">
+              <span class = "span3">
+                {{ licenseInfo.name }} 자격증은 <el-button size="small">{{ licenseInfo.agency }}</el-button> 에서 주최하며, <br/>
+                <span v-if = "licenseIfs.length > 0">
                   응시 조건은
-                  <span v-for="item, index in licenseIfs" :key="item.id">
-                    <el-button size="small">{{ item.name }}</el-button>
-                    <span v-if="index != licenseIfs.length-1">, </span>
+                  <span v-for = "item, index in licenseIfs" :key="item.id">
+                    <el-button size = "small">{{ item.name }}</el-button>
+                    <span v-if = "index != licenseIfs.length-1">, </span>
                   </span>
                   입니다.
                 </span>
                 <span v-else>응시 조건은 없습니다.</span>
-
-                평균 점수가 <el-button size="small">{{ licenseInfo.passScore }}</el-button> 를 넘어야 하며,
-                응시료는 <el-button size="small">{{ licenseInfo.examFee }}</el-button> 이며
-                합격률은 <el-button size="small">5,000,000 / 453,250</el-button> 입니다.
+                <br>
+                평균 점수가 <el-button size = "small">{{ licenseInfo.passScore }}</el-button> 를 넘어야 하고,
+                <br>
+                응시료는 <el-button size = "small">{{ licenseInfo.examFee }}</el-button> 이며
+                <br>
+                합격률은 <el-button size = "small">5,000,000 / 453,250</el-button> 입니다.
                 <br>
                 공부해야 하는 과목들은
-                <span v-for="item, index in licenseInfo.subjects" :key="item.id">
-                  <el-tooltip :content="item.minScoreMsg" placement="top">
-                    <el-button size="small">{{ item.name }}</el-button>
+                <span v-for = "item, index in licenseInfo.subjects" :key = "item.id">
+                  <el-tooltip :content = "item.minScoreMsg" placement = "top">
+                    <el-button size = "small">{{ item.name }}</el-button>
                   </el-tooltip>
-                  <span v-if="index != licenseInfo.subjects.length-1">, </span>
+                  <span v-if = "index != licenseInfo.subjects.length-1">, </span>
                 </span>
                 입니다.
                 <br>
               </span>
             </div>
           </div>
-        </el-carousel>
       </div>
     </div>
-
-    <div class="block1">
-      <div class="block4"> 
-        <router-link to="/explore/examination-one">
-          <el-button style = "height: 150px;" type="success" plain>기출 문제 - 한문제씩</el-button>
+    <div class = "block1">
+      <div class = "block4"> 
+        <router-link to = "/explore/examination-one">
+          <el-button style = "height: 150px;" type = "success" plain>기출 문제 - 한문제씩</el-button>
         </router-link>
       </div> 
     </div>
-
-    <div class="block1">
-      <div class="block4"> 
-        <router-link to="/explore/examination-word">
-          <el-button style = "height: 150px;" type="warning" plain>기출 용어 - 암기단어</el-button>
+    <div class = "block1">
+      <div class = "block4"> 
+        <router-link to = "/explore/examination-word">
+          <el-button style = "height: 150px;" type = "warning" plain>기출 용어 - 암기단어</el-button>
         </router-link>     
       </div> 
     </div>
-
-    <div class="block2">
-
-      <div class="block4">
-        <router-link to="/explore/acceptance-review">
-          <span class="demonstration"> BEST 합격 후기 </span>
+    <div class = "block2">
+      <div class = "block4">
+        <router-link to = "/explore/acceptance-review">
+          <span class = "demonstration"> BEST 합격 후기 </span>
         </router-link>
       </div>
-      <el-carousel height="530px">
-        <el-carousel-item v-for="item in successComments" :key="item.id" style="background-color:#ffff; border:2px solid #e0e0e0; border-radius:50px">
-          <router-link to="/explore/acceptance-review">
-            <div style="padding: 5% 5% 2% 5%;">
-              <span style="font-size:20px; font-weight: bold;">
-                <i class="el-icon-trophy" /> {{ item.successTitle }}
+      <el-carousel height = "530px">
+        <el-carousel-item 
+          v-for = "item in successComments" 
+          :key  = "item.id" 
+          style = "background-color:#ffff; border:2px solid #e0e0e0; border-radius:50px">
+          <router-link to = "/explore/acceptance-review">
+            <div style = "padding: 5% 5% 2% 5%;">
+              <span style = "font-size:20px; font-weight: bold;">
+                <i class = "el-icon-trophy" /> {{ item.successTitle }}
               </span>
             </div>
-            <div style="width:100%; height: 50px; padding :0% 5% 7% 3%">
-              <div style="width:15%; float:left; height: 100%; padding: 1.5% 2% 2% 2%;">
-                <span style="font-size:15px; font-weight: bold;">좋아요</span>
+            <div style = "width:100%; height: 50px; padding :0% 5% 7% 3%">
+              <div style = "width:15%; float:left; height: 100%; padding: 1.5% 2% 2% 2%;">
+                <span style = "font-size:15px; font-weight: bold;">좋아요</span>
               </div>
-              <div style="width:35%; float:left; height: 100%; padding: 1.5% 2% 2% 2%; ">
+              <div style = "width:35%; float:left; height: 100%; padding: 1.5% 2% 2% 2%; ">
                 <span>{{ item.likeCount }}</span>
               </div>
-              <div style="width:15%; float:left; height: 100%; padding: 1.5% 2% 2% 2%; ">
-                <span style="font-size:15px; font-weight: bold;">합격 점수</span>
+              <div style = "width:15%; float:left; height: 100%; padding: 1.5% 2% 2% 2%; ">
+                <span style = "font-size:15px; font-weight: bold;">합격 점수</span>
               </div>
-              <div style="width:35%; float:left; height: 100%; padding: 1.5% 2% 2% 2%; ">
+              <div style = "width:35%; float:left; height: 100%; padding: 1.5% 2% 2% 2%; ">
                 <span>{{ item.successScore }}</span>
               </div>
             </div>
-            <div style="padding:0% 5% 0% 5%;">
-              <span v-html="item.successComment" />
+            <div style = "padding:0% 5% 0% 5%;">
+              <span v-html = "item.successComment" />
             </div>
           </router-link>
         </el-carousel-item>
@@ -107,59 +103,24 @@
 import { fetchLicense, fetchLicenseIf, fetchSuccessComment } from '@/ddaja-api/user/explore/explore/explore'
 
 export default {
-  name: '',
-  data() {
+  name : 'Explore_Index'
+  
+  , data() {
     return {
-      licenseInfo: [],
-      licenseIfs: [],
-      successComments: [],
-      exploreAllOptions: [
-        {
-          id: 1,
-          title: '나의 도전 횟수',
-          count: 34
-        },
-        {
-          id: 2,
-          title: '모든 도전 횟수',
-          count: 2000
-        }
-      ],
-
-      exploreOneOptions: [
-        {
-          id: 1,
-          title: '나의 도전 횟수',
-          count: 5
-        },
-        {
-          id: 2,
-          title: '모든 도전 횟수',
-          count: 2012
-        }
-      ],
-
-      exploreWordOptions: [
-        {
-          id: 1,
-          title: '나의 도전 횟수',
-          count: 20
-        },
-        {
-          id: 2,
-          title: '모든 도전 횟수',
-          count: 5001
-        }
-      ]
+      licenseInfo: []
+      , licenseIfs: []
+      , successComments: []
     }
-  },
-  created() {
+  }
+
+  , created() {
     this.licenseInfo = this.$session.get('licenseInfo')
     this.setLicenseInfo()
     this.setLicenseIf()
     this.setSuccessComment()
-  },
-  methods: {
+  }
+  
+  , methods: {
     async setLicenseInfo() {
       var param = {
         licenseID: this.licenseInfo.licenseID
@@ -174,22 +135,22 @@ export default {
         })
 
         this.licenseInfo = {
-          id: response.item.id,
-          name: response.item.name,
-          code: response.item.code,
-          type: response.item.type,
-          agency: response.item.agency,
-          examFee: response.item.examFee,
-          passScore: response.item.passScore,
-          inUse: response.item.inUse,
-          createdDate: response.item.createdDate,
-          modifiedDate: response.item.modifiedDate,
-          subjects: subjects
+          id             : response.item.id
+          , name         : response.item.name
+          , code         : response.item.code
+          , type         : response.item.type
+          , agency       : response.item.agency
+          , examFee      : response.item.examFee
+          , passScore    : response.item.passScore
+          , inUse        : response.item.inUse
+          , createdDate  : response.item.createdDate
+          , modifiedDate : response.item.modifiedDate
+          , subjects     : subjects
         }
       })
-    },
+    }
 
-    async setLicenseIf() {
+    , async setLicenseIf() {
       var param = {
         licenseID: this.licenseInfo.licenseID
       }
@@ -204,9 +165,9 @@ export default {
         })
         this.licenseIfs = licenseIfs
       })
-    },
+    }
 
-    async setSuccessComment() {
+    , async setSuccessComment() {
       var param = {
         licenseID: this.licenseInfo.licenseID
       }
@@ -214,20 +175,20 @@ export default {
         var successComments = []
         if (response.items.length === 0) {
           successComments.push({
-            id: 1,
-            likeCount: 0,
-            successComment: '.',
-            successTitle: '합격 후기가 존재하지 않습니다.',
-            successScore: 0
+            id               : 1
+            , likeCount      : 0
+            , successComment : '.'
+            , successTitle   : '합격 후기가 존재하지 않습니다.'
+            , successScore   : 0
           })
         }
         response.items.forEach(x => {
           successComments.push({
-            id: x.item.id,
-            likeCount: x.item.likeCount,
-            successTitle: x.item.successTitle,
-            successComment: x.item.successComment,
-            successScore: x.item.successScore
+            id               : x.item.id
+            , likeCount      : x.item.likeCount
+            , successTitle   : x.item.successTitle
+            , successComment : x.item.successComment
+            , successScore   : x.item.successScore
           })
         })
         this.successComments = successComments

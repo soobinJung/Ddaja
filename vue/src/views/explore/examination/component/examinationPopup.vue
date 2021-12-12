@@ -203,6 +203,7 @@ export default {
             font-weight: bold;
             .span1{
                 float: left;
+                text-align: left;
             } 
         }
         .div2-1-2{ 

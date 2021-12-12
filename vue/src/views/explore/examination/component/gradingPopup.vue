@@ -1,45 +1,83 @@
 <template>
-    <div class="grading-popup">
+    <div >
         <el-dialog 
-        :visible.sync="popupVal" 
-        title=""
-        class="dialog-box"
-        :before-close="handleClose"> 
-        <div class="div1">
-            <div class="div1-1">
-                <span class="span1">2020년 10월 11일 3회차 모의고사</span> 
-                <span class="span2"> SCORE : 90 점</span>
-            </div>
-            <div class="div1-2">
-                <el-progress :text-inside="true" :stroke-width="20" :percentage="90" status="exception" class="progress"></el-progress>
-            </div>
-        </div>
-        <div class="div2">
-            <el-radio-group v-model="quizType" class="div2-1">
-                <el-radio :label="3">전체문제 확인</el-radio>
-                <el-radio :label="6">틀린문제만 확인</el-radio>
-                <el-radio :label="9">맞은 문제만 확인</el-radio>
-            </el-radio-group>
-        </div>
-        <div class="div3" v-for="(quiz) in testJson" :key="quiz.examinationNo" >
-            <div class="div3-1">
-                <div class="div3-1-1">
-                    <span class="span1"> {{quiz.examinationNo}}. {{quiz.examinationQuestion}}  </span> 
-                    <span class="span2">3</span> 
+        :visible.sync = "popupVal" 
+        :before-close = "handleClose" 
+        width         = "1700px"
+        top           = "2%"
+        title         = "">
+        <div class = "div1">
+            <div class = "div1-1">
+                <span class = "span1">{{roundName}}</span>
+                <div style="float: right; padding : 0 230px 0 0">
+                    <el-radio-group v-model = "checkMode">
+                        <el-radio-button label="1">모든 문제 확인</el-radio-button>
+                        <el-radio-button label="2">틀린 문제만 확인</el-radio-button>
+                        <el-radio-button label="3">맞은 문제만 확인</el-radio-button>
+                    </el-radio-group>
                 </div>
-                <div class="div3-1-2" >
-                    <el-button class="btn1" @click="communityPopupStatus(true)">토 론</el-button>
-                </div>
-                <div class="div3-1-3" v-for="(answer, index) in quiz.example" :key="answer">
-                    <span  class="span1" v-if="answer != quiz.examinationAnswer"> {{index+1}} . {{answer}}</span>
-                    <span class="span2" v-else> {{index+1}} . {{answer}}</span>
+            </div> 
+            <!-- <div style="float:left; padding: 50px 0 50px 70px">
+                
+            </div> -->
+        </div> 
+        <div 
+            class = "div2" 
+            v-for = "(quiz) in questionList" 
+            :key  = "quiz.id" >
+            <div class = "div2-1">
+                <div class = "div2-1-1">
+                    <span class = "span1"> {{quiz.no}}. {{quiz.title}}  </span>  
+                </div> 
+                <div class = "div2-1-1">
+                    <el-button style="float:left" class="btn1" @click="communityPopupStatus(true)">토 론</el-button>
+                </div> 
+                <div class = "div2-1-2" v-if="quiz.content != ''">
+                    <span class = "span1"> {{quiz.content}}  </span>  
+                </div> 
+                <div class = "div2-1-3" v-if = "quiz.answerOne != ''">
+                    <span class = "span1"> 
+
+                        <el-checkbox :disabled="quiz.answer != 1" v-model = "quiz.userAnswer[0]" @change = "checkAnswer(quiz, 0)">
+                            1 . {{quiz.answerOne}}
+                        </el-checkbox>
+                    </span> 
+                </div>  
+                <div class = "div2-1-3" v-if = "quiz.answerTwo != ''">
+                    <span class = "span1"> 
+                        <el-checkbox :disabled="quiz.answer != 2" v-model = "quiz.userAnswer[1]" @change = "checkAnswer(quiz, 1)" >
+                            2 . {{quiz.answerTwo}}
+                        </el-checkbox> 
+                    </span> 
+                </div>  
+                <!--:disabled="disabled"-->
+                <div class = "div2-1-3" v-if = "quiz.answerThr != ''">
+                    <span class = "span1"> 
+                        <el-checkbox :disabled="quiz.answer != 3" v-model = "quiz.userAnswer[2]" @change = "checkAnswer(quiz, 2)" >
+                            3 . {{quiz.answerThr}}
+                        </el-checkbox> 
+                    </span> 
+                </div>  
+                <div class = "div2-1-3" v-if = "quiz.answerFour != ''">
+                    <span class = "span1"> 
+                        <el-checkbox :disabled="quiz.answer != 4" v-model = "quiz.userAnswer[3]" @change = "checkAnswer(quiz, 3)" >
+                            4 . {{quiz.answerFour}}
+                        </el-checkbox> 
+                    </span> 
+                </div>  
+                <div class = "div2-1-3" v-if = "quiz.answerFive != ''">
+                    <span class = "span1"> 
+                        <el-checkbox :disabled="quiz.answer != 5" v-model = "quiz.userAnswer[4]" @change = "checkAnswer(quiz, 4)" >
+                            5 . {{quiz.answerFive}}
+                        </el-checkbox> 
+                    </span> 
                 </div>  
             </div>
         </div>
-        <span slot="footer" class="dialog-footer"> 
-            <el-button type="primary" @click="popupClose(false)">닫 기</el-button> 
+        <span slot = "footer" class = "dialog-footer"> 
+            <el-button style="width: 150px; height: 80px;" @click = "handleClose()" type="danger" plain>닫 기</el-button> 
         </span>
-        </el-dialog>
+        </el-dialog> 
         <community
         :popup-val="communityPopupVal"
         @close:community="communityPopupStatus"
@@ -48,27 +86,38 @@
 </template>
 
 <script>
-import testJson from '@/assets/jsonFile/subjectExaminationTestJson1'
+import { fetchListByQuestions } from '@/ddaja-api/user/explore/examination/Examination.js'
+import _ from 'lodash'
+
 import community from '@/views/explore/communication'
 export default {
     name: 'gradingPopup'
     , data() {
         return { 
-            testJson : testJson
-            , communityPopupVal : false
+            communityPopupVal : false
             , quizType : 1
+            , checkMode : 1
+            , questionList : []
+            , questionListOrg  : []
         }
     }
 
     , components : {
-        testJson
-        , community
+        community
     }
 
     , props: {
         popupVal : {
             type : Boolean
             , defalut: false
+        } 
+        , roundID    : {
+            type : Number
+            , defalut : 0
+        }
+        , roundName    : {
+            type : String
+            , defalut : ''
         } 
         , userQuestionResult    : {
             type : Array
@@ -79,20 +128,101 @@ export default {
     }
 
     , watch: { 
-        userQuestionResult(val){
-            console.log('사용자가 맞춘 답 여기 있쒈')
-            console.log(val)
+        popupVal(val){
+            if(val != 0){
+                this.fetchList()
+            }
+        }
+        , roundID(val){
+            if(val != 0){
+                this.fetchList()
+            }
+        }
+        , checkMode (val) {
+            this.questionResultCheckMode(val)
         }
     }
 
     , methods: { 
-        popupClose(val) { 
+        
+        async fetchList (){
+            if(this.roundID === 0){ return }
+            let param = {
+                licenseID   : 0
+                , roundID   : this.roundID || 0
+                , SubjectID :  0
+            }
+            this.questionList = []
+            await fetchListByQuestions(param).then( response => {
+                let userQuestionResult = this.userQuestionResult
+
+                response.items.forEach( (x, index) => {
+                    let userAnswer = [false, false, false, false, false]
+                    
+                    let userResult = userQuestionResult[index]
+                    userAnswer[userResult-1] = true
+
+                    this.questionList.push({
+                        id           : x.item.id
+                        , no         : x.item.no
+                        , title      : x.item.title
+                        , content    : x.item.content
+                        , answer     : x.item.answer
+                        , answerOne  : x.item.answerOne
+                        , answerTwo  : x.item.answerTwo
+                        , answerThr  : x.item.answerThr
+                        , answerFour : x.item.answerFour
+                        , answerFive : x.item.answerFive
+                        , userAnswer : userAnswer
+                        , created    : x.item.created
+                        , createdDate: x.item.createdDate
+                        , inUse      : x.item.inUse
+                        , isCreated  : x.item.isCreated
+                        , score      : x.item.score
+                        , lid        : x.item.lid
+                        , rid        : x.item.rid
+                        , sid        : x.item.sid
+                    })
+                })
+                this.questionListOrg = this.questionList
+            })
+        }
+
+        , questionResultCheckMode  ( mode ){
+
+            mode = Number(mode)
+            let questionListOrg = _.cloneDeep(this.questionListOrg);
+            this.questionList = []
+            
+            // 모두
+            if(mode === 1){
+                this.questionList =  questionListOrg; 
+            }
+
+            // 틀린 것만
+            if(mode === 2){
+                console.log(' 틀린 ')
+                this.questionList =  _.filter(questionListOrg, function(x) { 
+                    return !x.userAnswer[x.answer-1] ; 
+                });
+            }
+
+            // 맞은 것만
+            if(mode === 3){
+                console.log(' 맞은 ')
+                this.questionList =  _.filter(questionListOrg, function(x) { 
+                    return x.userAnswer[x.answer-1] ; 
+                });
+            }
+        }
+
+        , popupClose(val) { 
             // 채점 popup 닫는다.
             this.$emit('close:examination', val) 
         }
         , handleClose(done) {
             // 클릭 이벤트가 popup 벗어나면 확인창.
-        this.$confirm('정말 끝내시겠습니까 ? 😡')
+        this.$confirm('끝내시겠습니까 ?')
             .then(_ => {  
                 this.popupClose(false);
             })
@@ -111,86 +241,62 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+
 @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Jua&display=swap');
-.grading-popup{
-    .div1{
+.div1{
+    width: 100%;
+    height: 30px; 
+    .div1-1{ 
         width: 100%;
-        height: 30px; 
-        .div1-1{ 
-            width: 100%;
-            float: left; 
-            .span1, .span2{
-                float: left;
-                text-align: left; 
-                font-family: 'Do Hyeon', sans-serif;
-                color: black;
-                padding: 0 0 1% 2%;
-                width: 100%; 
-            }
-            .span1{font-size: 40px;}
-            .span2{font-size: 32px;} 
-        }
-        .div1-2{ 
-            width: 100%;
+        float: left;
+        .span1{
             float: left;
-            padding: 3% 0 0 5%; 
-            .progress{
-                width: 90%;
+            font-size: 40px;
+            font-family: 'Do Hyeon', sans-serif;
+            color: black;
+            padding: 0 0 0 5%;
+        }
+    }
+}
+.div2{
+    .div2-1{
+        width: 93%;
+        padding: 1%;
+        height: inherit; 
+        float: left;
+        margin: 1% 3% 1% 3%;
+        .div2-1-1{ 
+            float: left;
+            width: inherit;
+            padding: 2%;
+            font-size: 20px;
+            font-weight: bold;
+            .span1{
+                float: left;
+                text-align: left;
+            } 
+        }
+        .div2-1-2{ 
+            float: left;
+            width: inherit;
+            padding: 2%;
+            font-size: 15px;
+            font-weight: bold;
+            .span1{
+                float: left;
+            } 
+        }
+        .div2-1-3{ 
+            float: left;
+            width: inherit;
+            padding: 1.3%;
+            font-size: 15px;
+            font-weight: bold;
+            .span1{
+                padding-left: 5%;
+                float: left;
             }
         }
     }
-    .div2{
-        .div2-1{
-            margin: 10px 0 0 0;
-            padding: 1% 0 0 5%;
-            float: left;
-        } 
-    }    
-    .div3{
-        .div3-1{  
-            width: 93%;
-            padding: 2%;
-            height: inherit; 
-            float: left;
-            margin: 3% 3% 3% 3%;
-            .div3-1-1{ 
-                float: left;
-                width: inherit;
-                padding: 2%;
-                font-size: 15px;
-                font-weight: bold;
-                .span1, .span2{
-                    float: left;
-                }
-                .span2{
-                    color: blue;
-                    padding: 0 0 0 2%;
-                }
-            }
-            .div3-1-2{
-                float: left;
-                width: 100%; 
-                .btn1{
-                    float: right;
-                }
-            }
-            .div3-1-3{ 
-                float: left;
-                width: inherit;
-                padding: 2%;
-                font-size: 13px;
-                font-weight: bold;
-                .span1, .span2{
-                    padding-left: 5%;
-                    float: left;
-                }
-                .span2{
-                    color: red;
-                }
-            }        
-        }
-    } 
 }
-
-
 </style>
