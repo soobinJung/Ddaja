@@ -1,6 +1,5 @@
 package com.bng.ddaja.question.service;
 
-import com.bng.ddaja.common.domain.Question;
 import com.bng.ddaja.licenses.repository.LicensesRepository;
 import com.bng.ddaja.question.dto.QuestionDTO;
 import com.bng.ddaja.question.dto.QuestionSearch;

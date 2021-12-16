@@ -1,7 +1,5 @@
 package com.bng.ddaja.question.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import com.bng.ddaja.common.dto.CommonResponse;

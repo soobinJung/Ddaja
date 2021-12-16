@@ -53,12 +53,6 @@ public class User extends CommonEntity {
 
     @OneToMany(mappedBy = "user")
     private List<Debate> debates;
-    
-    @OneToMany(mappedBy = "user")
-    private List<DebateComment> debateComments;
-
-    @OneToMany(mappedBy = "user")
-    private List<DebateState> debateStates;
 
     @OneToMany(mappedBy = "user")
     private List<SuccessComment> successComments;
@@ -89,21 +83,7 @@ public class User extends CommonEntity {
         if(debate.getUser() != this) {
             debate.setUser(this);
         }
-    }
-
-    public void setDebateComment(DebateComment debateComment) {
-        this.debateComments.add(debateComment);
-        if(debateComment.getUser() != this) {
-            debateComment.setUser(this);
-        }
-    }
-
-    public void setDebateState(DebateState debateState) {
-        this.debateStates.add(debateState);
-        if(debateState.getUser() != this) {
-            debateState.setUser(this);
-        }
-    }
+    } 
 
     public void setSuccessComments(SuccessComment successComment) {
         this.successComments.add(successComment);

@@ -1,9 +1,8 @@
-package com.bng.ddaja.common.hateoas.licenses;
-
+package com.bng.ddaja.common.hateoas.debate;
 import com.bng.ddaja.common.dto.Link;
 import com.bng.ddaja.common.hateoas.CommonHateoas;
 
-public enum LicenseHateoas implements CommonHateoas {
+public enum DebateHateoas implements CommonHateoas {
     SELF("GET", "https://api.ddaja.com/licenses/")
     , UPDATE("PATCH", "https://api.ddaja.com/licenses/")
     , REPLACE("PUT", "https://api.ddaja.com/licenses/")
@@ -11,7 +10,7 @@ public enum LicenseHateoas implements CommonHateoas {
 
     public String method;
     public String url;
-    LicenseHateoas(String method, String url) {
+    DebateHateoas(String method, String url) {
         this.method = method;
         this.url = url;
     }
