@@ -1,5 +1,7 @@
 package com.bng.ddaja.debate.dto;
 
+import java.util.Date;
+
 import com.bng.ddaja.common.domain.Debate;
 import com.bng.ddaja.common.domain.Question;
 import com.bng.ddaja.common.domain.User;
@@ -63,7 +65,28 @@ public class DebateDTO extends CommonDTO {
     )
     private long dislikeCount;
 
+    @ApiModelProperty(
+        name = "inUse"
+        , example = "1"
+    )
+    private String inUse;
+
+    @ApiModelProperty(
+        name = "createdDate"
+        , example = "20200101"
+    )
+    private Date createdDate;
+
     public DebateDTO( Debate vo ){
+        this.id           = vo.getId();
+        this.dpID         = vo.getDpID();
+        this.uID          = vo.getUser().getId();
+        this.qID          = vo.getQuestion().getId();
+        this.debate       = vo.getDebate();
+        this.likeCount    = vo.getLikeCount();
+        this.inUse        = vo.getInUse();
+        this.dislikeCount = vo.getDislikeCount();
+        this.createdDate  = vo.getCreatedDate();
     }
 
     public Debate toEntity(Question question, User user){
@@ -75,6 +98,7 @@ public class DebateDTO extends CommonDTO {
                         .debate(debate)
                         .likeCount(likeCount)
                         .dislikeCount(dislikeCount)
+                        .inUse(inUse)
                         .build();
     }
 

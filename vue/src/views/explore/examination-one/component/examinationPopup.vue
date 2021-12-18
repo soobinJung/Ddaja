@@ -67,12 +67,10 @@ export default {
     }
     ,methods: {
         popupClose() { 
-            // 문제풀이 popup 닫는 친구.
             this.$emit('close:examination', false) 
         }
         , handleClose(done) {
-            // 클릭 이벤트가 popup 벗어나면 확인창.
-        this.$confirm('정말 끝내시겠습니까 ? 😡')
+            this.$confirm('종료 하시겠습니까 ?')
             .then(_ => {  
                 this.popupClose();
             })

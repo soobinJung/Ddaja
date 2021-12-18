@@ -20,6 +20,7 @@ public class DebateService {
     private UserRepository userRepository;
 
     public Page<DebateDTO> getAllDebateByDebateSearch(DebateSearch debateSearch) {
+
         return debateRepository.findAll(
             debateSearch.toSpecification()
             , debateSearch.toPageable()
@@ -31,7 +32,7 @@ public class DebateService {
     }
 
     public DebateDTO saveDebate( DebateDTO debateDTO ){
-        
+
         long dID = debateRepository.save( debateDTO.toEntity(
             questionRepository.findById(debateDTO.getQID())
             , userRepository.findById(debateDTO.getUID())

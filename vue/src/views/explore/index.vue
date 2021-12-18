@@ -46,9 +46,9 @@
     </div>
     <div class = "block1">
       <div class = "block4"> 
-        <router-link to = "/explore/examination-one">
-          <el-button style = "height: 150px;" type = "success" plain>기출 문제 - 한문제씩</el-button>
-        </router-link>
+        <!-- <router-link to = "/explore/examination-one"> -->
+          <el-button style = "height: 150px;" type = "success" @click = "develAlert()" plain>기출 문제 - 한문제씩</el-button>
+        <!-- </router-link> -->
       </div> 
     </div>
     <div class = "block1">
@@ -193,6 +193,10 @@ export default {
         })
         this.successComments = successComments
       })
+    }
+
+    , develAlert (){
+      alert('개발 중 입니다')
     }
   }
 }

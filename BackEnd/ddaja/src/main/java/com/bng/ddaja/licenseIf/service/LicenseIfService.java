@@ -4,9 +4,6 @@ import com.bng.ddaja.licenseIf.repository.LicenseIfRepository;
 
 import org.springframework.data.domain.Page;
 
-import java.util.List;
-
-import com.bng.ddaja.common.domain.LicenseIf;
 import com.bng.ddaja.licenseIf.dto.LicenseIfDTO;
 import com.bng.ddaja.licenseIf.dto.LicenseIfSearch;
 

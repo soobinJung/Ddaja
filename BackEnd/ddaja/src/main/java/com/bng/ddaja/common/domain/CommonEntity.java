@@ -23,8 +23,8 @@ public class CommonEntity {
     
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    @Column(name = "CREATED_DATE", updatable=false, insertable=false)
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Asia/Seoul")
+    @Column(name = "CREATED_DATE", updatable = false, insertable = false)
+    @JsonFormat(shape =  JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     public Date createdDate;
     
     @Temporal(TemporalType.TIMESTAMP)

@@ -1,15 +1,16 @@
 <template>
-    <div class="main-container">
-        <el-drawer title="I am the title"
-                :visible.sync="popupVal"
-                :with-header="false" 
-                :before-close="handleClose">
-            <div class="div1">
-                <span class="span1">토론</span>
-            </div>
+    <div class = "main-container">
+        <el-drawer title      = ""
+            :visible.sync = "popupVal"
+            :with-header  = "false" 
+            :before-close = "handleClose">
             <div style = "float:left; width: 100%;">
                 <div style = "float:left; width: 40%; height: 100%;">
                     <div class = "div2">
+                        <div style="height: 60px;"> 
+                            <h1 style="text-align:left"> 토론
+                            </h1> 
+                        </div>
                         <div class = "div2-1"><span> {{question.no}} .  {{question.title}} ( {{question.score}} 점 )  </span></div>
                         <div 
                             v-if = "question.answerOne != '' " 
@@ -38,31 +39,55 @@
                         </div>                                                                
                     </div>
                 </div>
-                <div style = "float:left; width: 60%; height: 100%;">
-                    <div style = "overflow:scroll; height: 750px; overflow-x: hidden">
-                        <div v-for="item in items" :key="item.key" style = "padding: 2%;"> 
+                <div style = "float:left; width: 60%; height: 100%; padding : 50px 0 0 0">
+                    <div style = "overflow:scroll; height: 780px; overflow-x: hidden">
+                        <div 
+                            v-for = "item in questionReplyList" 
+                            :key  = "item.key" 
+                            style = "padding: 2%;"> 
                             <div style = "">
                                 <div style = "text-align:left; padding: 0 1% 1% 0;">
-                                    <span style="span1"> {{item.name}} ( {{item.date}} )</span>
+                                    <div style = "float : left">
+                                        <span style = "float:left"> {{item.uid}} ( {{item.createdDate}} )</span>
+                                    </div>
+                                    <div style = "float : right; width: 100px;">
+                                        <el-button 
+                                            style  = "width: 90px;" 
+                                            @click = "updateLikeCount(item, 'dislike')" 
+                                            > 비공감 {{item.dislikeCount}} 
+                                        </el-button>
+                                    </div>
+                                    <div style = "float : right">
+                                        <el-button 
+                                            style  = "width: 90px;" 
+                                            @click = "updateLikeCount(item, 'like')"
+                                            > 공감 {{item.likeCount}}
+                                        </el-button>
+                                    </div>
                                 </div>
-                                <div style = "width: 100%; float:left; padding: 1% 1% 1% 0;">
-                                    <span style="float:left; padding-left:10px;" class="pointer"> 👍 200 </span>
-                                    <span style="float:left; padding-left:10px;" class="pointer"> 👎 100 </span>
-                                </div> 
-                                <div>
-                                    <span style="">
-                                    저는 아니라고 생긱 합니다. 왜냐하면 ~~~~~~저는 아니라고 생긱 합니다. 왜냐하면 ~~~~~~~~ 이기 때문이죠. 안그렇습니까 ? 제 생각에는 그렇다고 셍각합니다. SELECT 나 DELETE 나 UPDATE 나 내가 오또케 알아요
-                                    </span>
+                                <div style = "padding: 30px  0 0 0">
+                                    <p style = "text-align : left; font-size : 13px">
+                                    {{item.debate}}
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div style="width: 100%; margin : 2%">
-                        <div style="width:78%; float: left">
-                            <el-input placeholder = "생각을 공유해보세요" v-model = "replyInput"></el-input>
+                    <div style = "width: 100%; overflow:auto; padding : 20px 0 20px 0;">
+                        <div style = "width:10%; float: left;">
+                            <p style = "padding : 0 0 100px 0">토론</p>
                         </div>
-                        <div style="width: 20%; float: left">
-                            <el-button> 의견 저장 </el-button>
+                        <div style = "width:68%; float: left; padding : 5px 0 0 0">
+                            <el-input 
+                                placeholder         = "생각을 공유해보세요" 
+                                v-model             = "replyInput"
+                                @keyup.enter.native = "saveQuestionReply"
+                                ></el-input>
+                        </div>
+                        <div style = "width: 20%; float: left; padding : 5px 0 0 0">
+                            <el-button 
+                                @click = "saveQuestionReply"
+                            > 저장 </el-button>
                         </div>
                     </div>
                 </div>
@@ -72,7 +97,7 @@
 </template>
 
 <script>
-import { getQuestion } from '@/ddaja-api/user/explore/communication/Communication.js'
+import { getQuestion, getReply, saveReply, updateReply } from '@/ddaja-api/user/explore/communication/Communication.js'
 
 export default {
     name: 'community'
@@ -80,44 +105,32 @@ export default {
     , data() {
         return { 
             reply : ""
-            , question : {
-                    id            : 0
-                    , no          : 2
-                    , score       : 3
-                    , answer      : 2
-                    , title       : "UML 모델에서 한 사물의 명세가 ㄴㄴㄴㄴ?"
-                    , content     : ""
-                    , answerOne   : "Association"
-                    , answerTwo   : "Dependency"
-                    , answerThr   : "Realization"
-                    , answerFour  : "Generalization"
-                    , answerFive  : ""
-                    , created     : false
-                    , createdDate : 1639175966000
-                    , inUse       : true
-                    , isCreated   : false
-                    , lid         : 1
-                    , sid         : 1
-                    , rid         : 26
-                }
-            ,  items: [ 
-                {  name: 'Binsoo' , date: '20200102' }
-                , { name: 'Yubin' , date: '20200213' }
-                , { name: 'Enji'  , date: '20200521'  }
-                , { name: 'Enji'  , date: '20200521'  }
-                , { name: 'Enji'  , date: '20200521'  }
-                , { name: 'Enji'  , date: '20200521'  }
-                , { name: 'Enji'  , date: '20200521'  }
-                , { name: 'Enji'  , date: '20200521'  }
-                , { name: 'Enji'  , date: '20200521'  }
-                , { name: 'Enji'  , date: '20200521'  }
-                , { name: 'Enji'  , date: '20200521'  }
-                , { name: 'Enji'  , date: '20200521'  }
-                , { name: 'Boeun' , date: '20200631' }
-            ]
+            , questionReplyList : []
             , replyInput : ''
+            , question : {
+                id            : 0
+                , no          : 0
+                , score       : 0
+                , answer      : 0
+                , title       : ""
+                , content     : ""
+                , answerOne   : ""
+                , answerTwo   : "-"
+                , answerThr   : "-"
+                , answerFour  : "-"
+                , answerFive  : ""
+                , created     : false
+                , createdDate : ''
+                , inUse       : true
+                , isCreated   : false
+                , lid         : 1
+                , sid         : 1
+                , rid         : 1
+            }
+            
         }
     }
+
     , props: {
         popupVal : {
             type : Boolean
@@ -128,23 +141,23 @@ export default {
             , defalut : function (){
                 return {
                     id            : 0
-                    , no          : 2
-                    , score       : 3
-                    , answer      : 2
-                    , title       : "UML 모델에서 한 사물의 명세가 ?"
+                    , no          : 0
+                    , score       : 0
+                    , answer      : 0
+                    , title       : ""
                     , content     : ""
-                    , answerOne   : "Association"
-                    , answerTwo   : "Dependency"
-                    , answerThr   : "Realization"
-                    , answerFour  : "Generalization"
+                    , answerOne   : ""
+                    , answerTwo   : "-"
+                    , answerThr   : "-"
+                    , answerFour  : "-"
                     , answerFive  : ""
                     , created     : false
-                    , createdDate : 1639175966000
+                    , createdDate : ''
                     , inUse       : true
                     , isCreated   : false
                     , lid         : 1
                     , sid         : 1
-                    , rid         : 26
+                    , rid         : 1
                 }
             }
         }
@@ -161,14 +174,65 @@ export default {
                 this.question = response.item
             })
         }
-        
-        , setReply(){
 
+        , async setReply(){
+            this.questionReplyList = []
+
+            await getReply({qID : this.questionData.id}).then( response => {
+                response.items.forEach( x => {
+                    this.questionReplyList.push({
+                        id             : x.item.id
+                        , debate       : x.item.debate
+                        , dislikeCount : x.item.dislikeCount
+                        , dpID         : x.item.dpID
+                        , created      : x.item.created
+                        , inUse        : x.item.inUse === '1' ? true : false
+                        , isCreated    : x.item.isCreated
+                        , likeCount    : x.item.likeCount
+                        , qid          : x.item.qid
+                        , uid          : x.item.uid
+                        , createdDate  : x.item.createdDate
+                    })
+                })
+            })
         }
 
-        , popupClose() {  
+        , async saveQuestionReply (){
+            if(this.replyInput == ''){
+                alert('의견을 입력해주세요')
+            }
+
+            await saveReply({
+                dpID           : 0
+                , qID          : this.questionData.id
+                , uID          : 1
+                , debate       : this.replyInput
+                , likeCount    : 0
+                , dislikeCount : 0
+                , inUse        : 1
+            }).then( response => {
+                this.replyInput = ''
+                this.setReply()
+            })
+        }
+
+        , async updateLikeCount ( reply, status ){
+            if(status === 'like'){
+                reply.likeCount = (reply.likeCount + 1)
+            }
+
+            if(status === 'dislike'){
+                reply.dislikeCount = (reply.dislikeCount + 1)
+            }
+
+            await updateReply(reply).then()
+        }
+
+        , popupClose() { 
+            this.questionReplyList = []
             this.$emit('close:community', false) 
         }
+
         , handleClose(){
             this.popupClose()
         }
@@ -190,19 +254,6 @@ export default {
 
 .main-container{
     width: 100%; 
-    .div1{
-        float: left;
-        margin: 3% 0 0px 0%;
-        width: 93%;
-        height: 70px; 
-        padding: 8px 0 0 5%;
-        text-align: left;
-        .span1{
-            padding: 15px; 
-            font-family: 'Do Hyeon', sans-serif;
-            font-size: 50px;
-        }
-    }
     .div2{  
         width: 93%;
         padding: 2%;
@@ -233,92 +284,6 @@ export default {
                 float: left;
             } 
         }
-    }
-    .div3{
-        width: 93%;
-        padding: 2%;
-        height: inherit; 
-        float: left;
-        margin: 3% 3% 0% 3%; 
-            text-align: left;
-        border: 1px solid rgb(226, 226, 226); 
-        .span1{
-            font-weight: bold;
-            font-size: 15px;
-        }
-    }
-    .div4{
-        width: 93%; 
-        height: inherit; 
-        padding: 2% 2% 2% 2%;
-        float: left;
-        margin: 0% 3% 3% 3%;
-        border: 1px solid rgb(226, 226, 226); 
-        .textarea1{ 
-            width: inherit;
-            outline: none; 
-            height: 50px;
-            border: 1px solid rgb(179, 29, 29);  
-        }
-        .btn{
-            margin:12px 0 0 0; 
-            float:right;
-        }
-    }
-    .div5{
-        width: 93%; 
-        height:400px;
-        padding: 3% 3% 3% 3%;
-        float: left;
-        margin: 0% 0 3% 3%;
-        overflow:scroll;
-        .div5-1{
-            margin : 0 0 3px 0;
-            border: 1px solid rgb(226, 226, 226);
-            overflow:hidden;
-            height :auto;
-            float: left;
-            .div5-1-1{ 
-                width: 28%;
-                float: left; 
-                .div5-1-1-1{
-                    height: 100px;
-                    width: 135px;
-                    padding: 0 15px 0 15px;
-                    border: 1px solid rgb(162, 199, 255);
-                    width: 100%; 
-                    float: left;
-                    padding: 5% 0 0 5%; 
-                }
-                .div5-1-1-2, .div5-1-1-3{
-                    width: 100%; 
-                    float: left;
-                    padding: 5% 0 0 5%; 
-                    .span1{
-                        float: left;
-                        font-size: 13px;
-                        font-weight: bold;
-                    }
-                }
-            }
-            .div5-1-2{ 
-                width: 70%;
-                float: left;
-                padding: 3%;
-                .span1 {
-                    float: left;
-                    font-size: 14px;
-                    font-weight: bold;
-                }
-                .div5-1-2-2{
-                    padding: 7% 0 0 0;
-                    float: right; 
-                }
-            }
-        }
-    }
-    .pointer{
-        cursor:pointer;
     }
 }  
 

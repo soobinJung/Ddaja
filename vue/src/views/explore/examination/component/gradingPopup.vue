@@ -71,13 +71,13 @@
             </div>
         </div>
         <span slot = "footer" class = "dialog-footer"> 
-            <el-button style="width: 150px; height: 80px;" @click = "handleClose()" type="danger" plain>닫 기</el-button> 
+            <el-button @click = "handleClose()" type="danger" plain>닫 기</el-button> 
         </span>
         </el-dialog> 
         <community
-        :popup-val       = "communityPopupVal"
-        :question-data   = "questionData"
-        @close:community = "communityPopupStatus"
+            :popup-val       = "communityPopupVal"
+            :question-data   = "questionData"
+            @close:community = "communityPopupStatus"
         />
     </div> 
 </template>
@@ -242,7 +242,7 @@ export default {
         }
 
         , handleClose(done) {
-        this.$confirm('끝내시겠습니까 ?')
+        this.$confirm('종료 하시겠습니까 ?')
             .then(_ => {  
                 this.popupClose(false);
             })

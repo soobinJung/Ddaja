@@ -27,7 +27,7 @@ public class Debate extends CommonEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="D_ID")
+    @Column(name = "D_ID")
     private long id;
 
     @Column(name = "DP_ID")
@@ -50,6 +50,9 @@ public class Debate extends CommonEntity {
     @Column(name = "DISLIKE_COUNT")
     private long dislikeCount;
 
+    @Column(name="IN_USE")
+    private String inUse;
+    
     public void setQuestion(Question question) {
         if(this.question != null) {
             question.getDebates().remove(this);

@@ -15,21 +15,22 @@ import org.springframework.data.jpa.domain.Specification;
 public class DebateSpec {
 
     public static Specification<Debate> inUseEqual(final Boolean inUse) {
-        return new Specification<Debate>() {
-            public  Predicate toPredicate(Root<Debate> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+
+        return new Specification<Debate>(){
+            public Predicate toPredicate(Root<Debate> root, CriteriaQuery<?> query, CriteriaBuilder builder){
                 if (inUse == null) return builder.conjunction();
                 return builder.equal(root.get("inUse"), inUse);
             }
         };
     }
 
-    public static Specification<Debate> equalQuestionID(final long QuestionID) {
+    public static Specification<Debate> equalQuestionID(final long questionID) {
         return new Specification<Debate>() {
             @Override
             public Predicate toPredicate(Root<Debate> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-                if(QuestionID == 0) return builder.conjunction();
+                if(questionID == 0) return builder.conjunction();
                 Join<Debate, Question> j = root.join("question", JoinType.INNER);
-                return builder.equal(j.get("id"), QuestionID);
+                return builder.equal(j.get("id"), questionID);
             }
         };
     }

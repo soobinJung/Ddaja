@@ -66,57 +66,57 @@
 import { fetchWordQuestion } from '@/ddaja-api/user/explore/examination-word/ExaminationWord'
 
 export default {
-  name: 'ExaminationPopup',
+  name: 'ExaminationPopup'
 
-  props: {
+  , props: {
     popupVal: {
-      type: Boolean,
-      default: false
-    },
-    wordID: {
-      type: Number,
-      default: 0
-    },
-    wordQuestionsCount: {
-      type: Number,
-      default: 0
+      type: Boolean
+      , default: false
     }
-  },
+    , wordID: {
+      type: Number
+      , default: 0
+    }
+    , wordQuestionsCount: {
+      type: Number
+      , default: 0
+    }
+  }
 
-  data() {
+  , data() {
     return {
-      amswerVal: '',
-      wordTitle: '',
-      questionResult: true,
-      questionList: [],
-      questionListSize: 0,
-      questionIndex: 0,
-      question: {
-        id: 0,
-        lid: 0,
-        answer: '',
-        content: '',
-        createDate: '',
-        modifieDate: ''
+      amswerVal          : ''
+      , wordTitle        : ''
+      , questionResult   : true
+      , questionList     : []
+      , questionListSize : 0
+      , questionIndex    : 0
+      , question: {
+        id            : 0
+        , lid         : 0
+        , answer      : ''
+        , content     : ''
+        , createDate  : ''
+        , modifieDate : ''
       }
     }
-  },
+  }
 
-  watch: {
+  , watch: {
     popupVal(val) {
       if (val) {
         this.fetchWordQuestion()
       }
     }
-  },
+  }
 
-  methods: {
+  , methods: {
 
     fetchWordQuestion() {
       var param = {
-        wordID: this.wordID,
-        size: this.wordQuestionsCount,
-        page: 0
+        wordID: this.wordID
+        , size: this.wordQuestionsCount
+        , page: 0
       }
 
       fetchWordQuestion(param).then(response => {
@@ -132,34 +132,35 @@ export default {
         this.wordTitle = response.items[0].item.wordDTO.title
         this.setWordQuestion(0)
       })
-    },
+    }
 
-    answerCheck() {
+    , answerCheck() {
       this.questionResult = false
-    },
-    setWordQuestion(index) {
+    }
+    
+    , setWordQuestion(index) {
       console.log('setWordQuestion ' + index)
       var questionIndex = this.questionIndex + index
       this.questionIndex = questionIndex
       this.question = this.questionList[questionIndex]
       this.amswerVal = ''
       this.questionResult = true
-    },
+    }
 
-    handleClose() {
-      this.$confirm('END ?').then(_ => {
+    , handleClose() {
+      this.$confirm('종료 하시겠습니까 ?').then(_ => {
         this.popupClose()
       }).catch(_ => {})
-    },
+    }
 
-    popupClose() {
+    , popupClose() {
       this.question = {
-        id: 0,
-        lid: 0,
-        answer: '',
-        content: '',
-        createDate: '',
-        modifieDate: ''
+        id            : 0
+        , lid         : 0
+        , answer      : ''
+        , content     : ''
+        , createDate  : ''
+        , modifieDate : ''
       }
       this.wordTitle = ''
       this.$emit('close:examination', false)

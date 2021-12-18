@@ -33,7 +33,7 @@ export default {
   created() { },
   methods: {
     handleClose(done) {
-      this.$confirm('끝내시겠습니까 ?')
+      this.$confirm('종료 하시겠습니까 ?')
         .then(_ => {
           this.popupClose(false)
         })

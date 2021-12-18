@@ -60,7 +60,7 @@
             </div>
         </div>
         <span slot = "footer" class = "dialog-footer"> 
-            <el-button style="width: 150px; height: 80px;" @click = "questionResultCheck()" type="danger" plain>채 점</el-button> 
+            <el-button @click = "questionResultCheck()" type="danger" plain>채 점  하 기</el-button> 
         </span>
         </el-dialog> 
     </div> 
@@ -161,7 +161,7 @@ export default {
         }
 
         , handleClose() {
-            this.$confirm('정말 끝내시겠습니까 ?')
+            this.$confirm('종료 하시겠습니까 ?')
                 .then(_ => {  
                     this.popupClose(false);
                 })
